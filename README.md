@@ -1,0 +1,1 @@
+# figura-vscode-extension
