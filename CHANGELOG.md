@@ -1,0 +1,79 @@
+# Change Log
+
+## 0.0.1
+
+- Autocompletion for figura global variables
+
+## 0.0.2
+
+- Bugfixes
+
+## 0.0.3
+
+- Bugfixes
+
+## 0.0.4
+
+- Variable name completion
+
+## 0.1.0
+
+- Code snippets
+- Improved variable name completion
+
+## 0.1.1
+
+- Added missing functions for Player API
+
+## 0.2.0
+
+- Now loads model.bbmodel or player_model.bbmodel to allow for Blockbench suggestions
+
+## 0.2.1
+
+- Fix accessing model parts with spaces in the name
+
+## 0.3.0
+
+- Compatibility for sumneko's Language Server + figura documentation (can be turned on in settings)
+- Option to automatically download latest figura documentation from https://github.com/GrandpaScout/Figura-VSCode-Documentation
+- Added missing functions to some APIs
+- Fix snippets only showing up when pressing ctrl+space
+
+## 0.3.1
+
+- Adjust to change in the .version file
+
+## 0.3.2
+
+- Now installs the documentation in the current workspace
+
+## 0.3.3
+
+- Shows a button to click on which opens the settings when a new documentation has been installed
+
+## 0.4.0
+
+- Libraries
+
+## 0.4.1
+
+- Fix crash at startup
+
+## 0.4.2
+
+- Setting for libraries folder name
+- Now checks current workspace for libraries as well
+
+## 0.4.3
+
+- Keep docs up to date is now enabled by default
+- Lua Language Server support will be automatically enabled, if sumneko language server is detected
+
+# 0.4.4
+
+- Bugfix: No longer shows language server enabled message if it was already enabled
+
+# 0.4.5
+
+- Edited README
