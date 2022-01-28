@@ -77,3 +77,7 @@
 # 0.4.5
 
 - Edited README
+
+# 0.4.6
+
+- Add API autocomplete for Figura-0.0.7

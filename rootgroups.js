@@ -26,6 +26,13 @@ const log = new WordGroup(['log'], vscode.CompletionItemKind.Field);
 const logTableContent = new WordGroup(['logTableContent'], vscode.CompletionItemKind.Field);
 const parrot_model = new WordGroup(['parrot_model'], vscode.CompletionItemKind.Field);
 const nameplate = new WordGroup(['nameplate'], vscode.CompletionItemKind.Field);
+const camera = new WordGroup(['camera'], vscode.CompletionItemKind.Field);
+const client = new WordGroup(['client'], vscode.CompletionItemKind.Field);
+const data = new WordGroup(['data'], vscode.CompletionItemKind.Field);
+const first_person_model = new WordGroup(['first_person_model'], vscode.CompletionItemKind.Field);
+const spyglass_model = new WordGroup(['spyglass_model'], vscode.CompletionItemKind.Field);
+const ping = new WordGroup(['ping'], vscode.CompletionItemKind.Field);
+const renderlayers = new WordGroup(['renderlayers'], vscode.CompletionItemKind.Field);
 
 vanilla_model.addSubGroup(new WordGroup([
     'HEAD',
@@ -39,7 +46,10 @@ vanilla_model.addSubGroup(new WordGroup([
     'LEFT_LEG',
     'LEFT_PANTS_LEG',
     'RIGHT_LEG',
-    'RIGHT_PANTS_LEG'
+    'RIGHT_PANTS_LEG',
+    'CAPE',
+    'LEFT_EAR',
+    'RIGHT_EAR',
 ], vscode.CompletionItemKind.Property));
 
 armor_model.addSubGroup(new WordGroup([
@@ -101,7 +111,13 @@ particle.addSubGroup(new WordGroup([
 
 sound.addSubGroup(new WordGroup([
     'playSound',
-    'getSounds'
+    'getSounds',
+    'registerCustomSound',
+    'isCustomSoundRegistered',
+    'playCustomSound',
+    'getCustomSounds',
+    'getRegisteredCustomSounds',
+    'stopCustomSound',
 ], vscode.CompletionItemKind.Method));
 
 player.addSubGroup(new WordGroup([
@@ -110,7 +126,9 @@ player.addSubGroup(new WordGroup([
     'getExperienceProgress',
     'getSaturation',
     'lastDamageSource',
-    'getExperienceLevel'
+    'getExperienceLevel',
+    'getTargetedEntity',
+    'getStoredValue',
 ], vscode.CompletionItemKind.Method));
 
 const livingentity = new WordGroup([
@@ -125,7 +143,10 @@ const livingentity = new WordGroup([
     'getHealth',
     'getStuckArrowCount',
     'getStatusEffect',
-    'getStatusEffectTypes'
+    'getStatusEffectTypes',
+    'isUsingItem',
+    'getActiveHand',
+    'getActiveItem',
 ], vscode.CompletionItemKind.Method);
 
 const entity = new WordGroup([
@@ -146,11 +167,15 @@ const entity = new WordGroup([
     'getBoundingBox',
     'getName',
     'getUUID',
-    'getEquipmentSlot',
+    'getEquipmentItem',
     'getType',
     'isGrounded',
     'getAnimation',
-    'getVelocity'
+    'getVelocity',
+    'isUnderwater',
+    'isInLava',
+    'isInRain',
+    'getNbtValue',
 ], vscode.CompletionItemKind.Method);
 
 player.addSubGroup(livingentity);
@@ -163,15 +188,18 @@ world.addSubGroup(new WordGroup([
     'getTime',
     'getTimeOfDay',
     'getMoonPhase',
+    'getLunarTime',
     'getRainGradient',
     'isLightning',
     'getLightLevel',
     'getSkyLightLevel',
     'getBlockLightLevel',
     'getBiomeID',
+    'isOpenSky',
+    'getBiomeTemperature',
+    'getBiomePrecipitation',
     'getFiguraPlayers',
-    'getBlockTags',
-    'getLunarTime'
+    'hasWorld',
 ], vscode.CompletionItemKind.Method));
 
 vectors.addSubGroup(new WordGroup([
@@ -183,13 +211,32 @@ vectors.addSubGroup(new WordGroup([
     'rgbToINT',
     'intToRGB',
     'lerp',
-    'asTable'
+    'asTable',
+    'worldToCameraPos',
+    'rotateWithQuaternion',
+    'toQuaternion',
+    'fromQuaternion',
+    'worldToScreenSpace',
 ], vscode.CompletionItemKind.Method));
 
 renderer.addSubGroup(new WordGroup([
     'setShadowSize',
     'getShadowSize',
     'isFirstPerson',
+    'isCameraBackwards',
+    'getCameraPos',
+    'setRenderFire',
+    'getRenderFire',
+    'renderItem',
+    'renderBlock',
+    'renderText',
+    'getTextWidth',
+    'setMountEnabled',
+    'isMountEnabled',
+    'setMountShadowEnabled',
+    'isMountShadowEnabled',
+    'raycastBlocks',
+    'raycastEntities',
 ], vscode.CompletionItemKind.Method));
 
 network.addSubGroup(new WordGroup([
@@ -206,7 +253,9 @@ action_wheel.addSubGroup(new WordGroup([
     'getLeftSize',
     'setRightSize',
     'getRightSize',
-    'getSelectedSlot'
+    'getSelectedSlot',
+    'isOpen',
+    'runAction',
 ], vscode.CompletionItemKind.Method));
 
 const action_wheel__slots = new WordGroup([
@@ -234,6 +283,12 @@ const action_wheel__slots__methods = new WordGroup([
     'getColor',
     'setHoverColor',
     'getHoverColor',
+    'setTexture',
+    'getTexture',
+    'setTextureScale',
+    'getTextureScale',
+    'setUV',
+    'getUV',
 ], vscode.CompletionItemKind.Method);
 
 action_wheel__slots.addSubGroup(action_wheel__slots__methods);
@@ -241,31 +296,42 @@ action_wheel.addSubGroup(action_wheel__slots);
 
 keybind.addSubGroup(new WordGroup([
     'newKey',
-    'getRegisteredKeybind'
+    'getRegisteredKeybind',
+    'getKeyList',
+    'getRegisteredKeyList',
 ], vscode.CompletionItemKind.Method));
 
 chat.addSubGroup(new WordGroup([
     'sendMessage',
     'getMessage',
-    'setFiguraCommandPrefix'
+    'getInputText',
+    'setFiguraCommandPrefix',
+    'isOpen',
 ], vscode.CompletionItemKind.Method));
 
 meta.addSubGroup(new WordGroup([
     'getInitLimit',
-    'getCurrentTickCount',
     'getTickLimit',
-    'getCurrentRenderCount',
     'getRenderLimit',
-    'getCurrentComplexity',
-    'getComplexityLimit',
-    'getCurrentParticleCount',
-    'getParticleLimit',
-    'getCurrentSoundCount',
-    'getSoundLimit',
     'getCanModifyVanilla',
-    'getCanModifyNameplate',
+    'getComplexityLimit',
+    'getParticleLimit',
+    'getSoundLimit',
     'getDoesRenderOffscreen',
-    'getFiguraVersion'
+    'getCanModifyNameplate',
+    'getCanHaveCustomRenderLayer',
+    'getCanHaveCustomSounds',
+    'getCurrentInitCount',
+    'getCurrentTickCount',
+    'getCurrentRenderCount',
+    'getCurrentComplexity',
+    'getCurrentParticleCount',
+    'getCurrentSoundCount',
+    'getFiguraVersion',
+    'getModelStatus',
+    'getScriptStatus',
+    'getTextureStatus',
+    'getBackendStatus',
 ], vscode.CompletionItemKind.Method));
 
 const nameplate_chat = new WordGroup([
@@ -278,10 +344,6 @@ const nameplate_list = new WordGroup([
     'LIST'
 ], vscode.CompletionItemKind.Property);
 const nameplate_all_methods = new WordGroup([
-    'setColor',
-    'getColor',
-    'setFormatting',
-    'getFormatting',
     'setText',
     'getText',
 ], vscode.CompletionItemKind.Method);
@@ -327,8 +389,193 @@ const custommodelpart = new WordGroup([
     'partToWorldDir',
     'worldToPartDir',
     'setOpacity',
-    'getOpacity'
+    'getOpacity',
+    'setUVData',
+    'getUVData',
+    'getTextureSize',
+    'setTextureSize',
+    'setRenderLayer',
+    'getTexture',
+    'setTexture',
+    'getExtraTexEnabled',
+    'setExtraTexEnabled',
+    'getCullEnabled',
+    'setCullEnabled',
+    'getType',
+    'getName',
 ], vscode.CompletionItemKind.Method);
+
+camera_first_person = new WordGroup([
+    'FIRST_PERSON',
+], vscode.CompletionItemKind.Property);
+
+camera_third_person = new WordGroup([
+    'THIRD_PERSON',
+], vscode.CompletionItemKind.Property);
+
+const camera_methods = new WordGroup([
+    'setPos',
+    'getPos',
+    'setRot',
+    'getRot',
+    'setPivot',
+    'getPivot',
+], vscode.CompletionItemKind.Method);
+
+camera_first_person.addSubGroup(camera_methods);
+camera_third_person.addSubGroup(camera_methods);
+camera.addSubGroup(camera_first_person);
+camera.addSubGroup(camera_third_person);
+
+client.addSubGroup(new WordGroup([
+    'getOpenScreen',
+    'getFPS',
+    'isPaused',
+    'getVersion',
+    'getVersionType',
+    'getServerBrand',
+    'getChunksCount',
+    'getEntityCount',
+    'getParticleCount',
+    'getSoundCount',
+    'getActiveShader',
+    'getJavaVersion',
+    'getMemoryInUse',
+    'getMaxMemory',
+    'getAllocatedMemory',
+    'isWindowFocused',
+    'isHudEnabled',
+    'getWindowSize',
+    'getGUIScale',
+    'getFov',
+    'setCrosshairPos',
+    'getCrosshairPos',
+    'setCrosshairEnabled',
+    'getCrosshairEnabled',
+    'isHost',
+    'getSystemTime',
+], vscode.CompletionItemKind.Method));
+
+data.addSubGroup(new WordGroup([
+    'setName',
+    'getName',
+    'save',
+    'load',
+    'loadAll',
+    'remove',
+    'deleteFile',
+], vscode.CompletionItemKind.Method));
+
+first_person_model_main_hand = new WordGroup([
+    'MAIN_HAND',
+], vscode.CompletionItemKind.Property);
+
+first_person_model_off_hand = new WordGroup([
+    'OFF_HAND',
+], vscode.CompletionItemKind.Property);
+
+const first_person_model_methods = new WordGroup([
+    'setPos',
+    'getPos',
+    'setRot',
+    'getRot',
+    'setScale',
+    'getScale',
+    'setEnabled',
+    'getEnabled',
+], vscode.CompletionItemKind.Method);
+
+first_person_model_main_hand.addSubGroup(first_person_model_methods);
+first_person_model_off_hand.addSubGroup(first_person_model_methods);
+first_person_model.addSubGroup(first_person_model_main_hand);
+first_person_model.addSubGroup(first_person_model_off_hand);
+
+spyglass_model_left_spyglass = new WordGroup([
+    'RIGHT_SPYGLASS',
+], vscode.CompletionItemKind.Property);
+
+spyglass_model_right_spyglass = new WordGroup([
+    'LEFT_SPYGLASS',
+], vscode.CompletionItemKind.Property);
+
+const spyglass_model_methods = new WordGroup([
+    'setPos',
+    'getPos',
+    'setRot',
+    'getRot',
+    'setScale',
+    'getScale',
+    'setEnabled',
+    'getEnabled',
+], vscode.CompletionItemKind.Method);
+
+spyglass_model_left_spyglass.addSubGroup(spyglass_model_methods);
+spyglass_model_right_spyglass.addSubGroup(spyglass_model_methods);
+spyglass_model.addSubGroup(spyglass_model_left_spyglass);
+spyglass_model.addSubGroup(spyglass_model_right_spyglass);
+
+renderlayers.addSubGroup(new WordGroup([
+    'registerShader',
+    'registerRenderLayer',
+    'setUniform',
+    'setPriority',
+    'getPriority',
+    'isShaderReady',
+    'useShader',
+    'setTexture',
+    'enableLightmap',
+    'disableLightmap',
+    'enableOverlay',
+    'disableOverlay',
+    'enableCull',
+    'disableCull',
+    'enableDepthTest',
+    'disableDepthTest',
+    'depthFunc',
+    'depthMask',
+    'enableBlend',
+    'disableBlend',
+    'blendFunc',
+    'blendFuncSeparate',
+    'defaultBlendFunc',
+    'blendEquation',
+    'enableColorLogicOp',
+    'disableColorLogicOp',
+    'logicOp',
+    'colorMask',
+    'enableStencil',
+    'disableStencil',
+    'stencilMask',
+    'stencilFunc',
+    'stencilOp',
+    'enableScissors',
+    'disableScissors',
+    'lineWidth',
+    'restoreDefaults',
+], vscode.CompletionItemKind.Method));
+
+renderlayers.addSubGroup(new WordGroup([
+    'GL_NEVER',
+    'GL_LESS',
+    'GL_EQUAL',
+    'GL_LEQUAL',
+    'GL_GREATER',
+    'GL_NOTEQUAL',
+    'GL_GEQUAL',
+    'GL_ALWAYS',
+    'GL_FUNC_ADD',
+    'GL_FUNC_SUBTRACT',
+    'GL_FUNC_REVERSE_SUBTRACT',
+    'GL_MAX',
+    'GL_MIN',
+    'GL_KEEP',
+    'GL_REPLACE',
+    'GL_INCR',
+    'GL_INCR_WRAP',
+    'GL_DECR',
+    'GL_DECR_WRAP',
+    'GL_INVERT',
+], vscode.CompletionItemKind.Property));
 
 // ------ watch blockbench file begin ------
 
@@ -352,34 +599,34 @@ function onDidChangeActiveTextEditor() {
     let currentlyOpenTabFolderPath;
     let bbmodelpath;
     if (currentlyOpenTabfilePath != undefined) currentlyOpenTabFolderPath = path.dirname(currentlyOpenTabfilePath);
-    if (currentlyOpenTabFolderPath != undefined) bbmodelpath = path.join(currentlyOpenTabFolderPath,'/model.bbmodel');
-    if (!fs.existsSync(bbmodelpath)) bbmodelpath = path.join(currentlyOpenTabFolderPath,'/player_model.bbmodel');
-    
+    if (currentlyOpenTabFolderPath != undefined) bbmodelpath = path.join(currentlyOpenTabFolderPath, '/model.bbmodel');
+    if (!fs.existsSync(bbmodelpath)) bbmodelpath = path.join(currentlyOpenTabFolderPath, '/player_model.bbmodel');
+
     if (bbmodelpath != undefined && fs.existsSync(bbmodelpath)) {
         let fsWait = false;
         filewatcher = fs.watch(bbmodelpath, (event, filename) => {
-          if (filename) {
-            if (fsWait) return;
-            fsWait = setTimeout(() => {
-              fsWait = false;
-            }, 100);
-            console.log(`${filename} file Changed`);
-        
-            // reset model
-            let index = rootgroups.findIndex(x => x == model);
-            if (index != -1) rootgroups.splice(index, 1);
-            model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
-        
-            // parse new model
-            try {
-                parseBB();
-                vscode.window.setStatusBarMessage("Blockbench model reloaded");
+            if (filename) {
+                if (fsWait) return;
+                fsWait = setTimeout(() => {
+                    fsWait = false;
+                }, 100);
+                console.log(`${filename} file Changed`);
+
+                // reset model
+                let index = rootgroups.findIndex(x => x == model);
+                if (index != -1) rootgroups.splice(index, 1);
+                model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
+
+                // parse new model
+                try {
+                    parseBB();
+                    vscode.window.setStatusBarMessage("Blockbench model reloaded");
+                }
+                catch {
+                    vscode.window.showWarningMessage("Blockbench model not found");
+                }
+                rootgroups.push(model);
             }
-            catch {
-                vscode.window.showWarningMessage("Blockbench model not found");
-            }
-            rootgroups.push(model);
-          }
         });
         parseBB();
     }
@@ -390,10 +637,10 @@ function onDidChangeActiveTextEditor() {
         let bbmodel = JSON.parse(fs.readFileSync(bbmodelpath).toString());
         bbmodelForeach(bbmodel, bbmodel.outliner, model);
     }
-    
+
     function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
         currentgroup.forEach(element => {
-            if (typeof(element) == 'string') {
+            if (typeof (element) == 'string') {
                 // cube
                 let cube = bbmodel.elements.find(x => x.uuid == element);
                 let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Property);
@@ -437,6 +684,13 @@ if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) {
     rootgroups.push(logTableContent);
     rootgroups.push(parrot_model);
     rootgroups.push(nameplate);
+    rootgroups.push(camera);
+    rootgroups.push(client);
+    rootgroups.push(data);
+    rootgroups.push(first_person_model);
+    rootgroups.push(spyglass_model);
+    rootgroups.push(ping);
+    rootgroups.push(renderlayers);
 }
 // always
 rootgroups.push(model);

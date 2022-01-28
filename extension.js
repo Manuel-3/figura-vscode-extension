@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const parser = require('./parser');
 const rootgroups = require('./rootgroups');
-const downloader = require('./downloader')
+const downloader = require('./downloader');
 const libraries = require('./libraries').getLibraries();
 
 /**
@@ -9,7 +9,7 @@ const libraries = require('./libraries').getLibraries();
  */
 async function activate(context) {
 
-    if (vscode.workspace.getConfiguration('figura').get('checkForNewDocumentationVersion')) {
+	if (vscode.workspace.getConfiguration('figura').get('checkForNewDocumentationVersion')) {
 		downloader.fetch();
 		let sumnekolua = vscode.extensions.all.find(x => x.id == 'sumneko.lua');
 		if (sumnekolua != undefined) {
@@ -19,7 +19,7 @@ async function activate(context) {
 			}
 		}
 		else {
-			vscode.window.showInformationMessage('Figura extension works best with a Lua Language Server installed, please consider adding one!', 'Install', 'Maybe later').then(selection=>{
+			vscode.window.showInformationMessage('Figura extension works best with a Lua Language Server installed, please consider adding one!', 'Install', 'Maybe later').then(selection => {
 				if (selection == 'Install') {
 					vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('vscode:extension/sumneko.lua'));
 				}
@@ -47,7 +47,7 @@ async function activate(context) {
 				const linePrefix = document.lineAt(position).text.substr(0, position.character);
 
 				if (linePrefix.match(/\.\w+$/)) return [];
-				
+
 				for (let i = 0; i < rootgroups.length; i++) {
 					let item = new vscode.CompletionItem(rootgroups[i].words[0], rootgroups[i].type);
 					item.commitCharacters = ['.'];
@@ -67,7 +67,7 @@ async function activate(context) {
 				const linePrefix = document.lineAt(position).text.substr(0, position.character);
 
 				for (let i = 0; i < rootgroups.length; i++) {
-					items = items.concat(browse(document, position, linePrefix, rootgroups[i].subgroups, '\\b'+rootgroups[i].words[0]+'\\.'));
+					items = items.concat(browse(document, position, linePrefix, rootgroups[i].subgroups, '\\b' + rootgroups[i].words[0] + '\\.'));
 				}
 
 				return items;
@@ -79,7 +79,7 @@ async function activate(context) {
 	// recursively find matching words
 	function browse(document, position, linePrefix, groups, pattern) {
 		let items = [];
-		
+
 		if (groups == []) return [];
 
 		for (let i = 0; i < groups.length; i++) {
@@ -90,16 +90,16 @@ async function activate(context) {
 					let item = new vscode.CompletionItem(group.words[n], group.type);
 					if (hasSpaces) {
 						item.insertText = '["' + group.words[n] + '"]';
-						let range = new vscode.Range(new vscode.Position(position.line,position.character-1), position);
+						let range = new vscode.Range(new vscode.Position(position.line, position.character - 1), position);
 						item.additionalTextEdits = [new vscode.TextEdit(range, '')]; // remove the '.'
 					}
 					if (group.type == vscode.CompletionItemKind.Method) item.commitCharacters = ['('];
 					else if (group.type == vscode.CompletionItemKind.Property) item.commitCharacters = ['.'];
-					
+
 					items.push(item);
 				}
 				let nextpattern;
-				if (hasSpaces) nextpattern = pattern.substring(0,pattern.length-2) + '\\[\\"' + group.words[n] + '\\"\\]' + '\\.'; // in this case remove the \. from the pattern and use ["word"]
+				if (hasSpaces) nextpattern = pattern.substring(0, pattern.length - 2) + '\\[\\"' + group.words[n] + '\\"\\]' + '\\.'; // in this case remove the \. from the pattern and use ["word"]
 				else nextpattern = pattern + group.words[n] + '\\.';
 				items = items.concat(
 					browse(document, position, linePrefix, group.subgroups, nextpattern)
@@ -114,12 +114,12 @@ async function activate(context) {
 		'lua',
 		{
 			provideCompletionItems(document, position, token, context) {
-    			if (vscode.workspace.getConfiguration('figura').get('useLanguageServer')) return;
+				if (vscode.workspace.getConfiguration('figura').get('useLanguageServer')) return;
 
 				// remove the current line to not include what is currently being typed in the results
-				var lines = document.getText().split('\n');
+				const lines = document.getText().split('\n');
 				lines.splice(document.lineAt(position).lineNumber, 1);
-				var text = lines.join('\n');
+				const text = lines.join('\n');
 
 				let variables = parser.parse(text, /((?<=\s)|(?<=^))[a-zA-z_]\w*\b((?=\s*=))/g);
 				let functions = parser.parse(text, /((?<=\s)|(?<=^))[a-zA-z_]\w*\b((?=\s*\())/g);
@@ -144,7 +144,7 @@ async function activate(context) {
 		'lua',
 		{
 			provideCompletionItems(document, position, token, context) {
-				
+
 				let items = libraries.map(lib => {
 					let item = new vscode.CompletionItem('import: ' + lib.name, vscode.CompletionItemKind.File);
 					item.insertText = lib.content;
@@ -157,7 +157,7 @@ async function activate(context) {
 
 	context.subscriptions.push(rootnodeprovider, subnodeprovider, variableNameProvider, librariesProvider);
 
-	vscode.window.setStatusBarMessage("Figura Helper activated");
+	vscode.window.setStatusBarMessage("Figura extension activated");
 }
 
 function deactivate() { }
