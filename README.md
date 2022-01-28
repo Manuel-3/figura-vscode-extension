@@ -19,7 +19,6 @@ For the following global figura variables and the API functions they provide:
     armor_model
     elytra_model
     held_item_model
-    model
     particle
     sound
     player
@@ -32,8 +31,18 @@ For the following global figura variables and the API functions they provide:
     keybind
     chat
     meta
+    log
+    logTableContent
     parrot_model
     nameplate
+    camera
+    client
+    data
+    first_person_model
+    spyglass_model
+    ping
+    renderlayers
+
 </details>
 
 ### Snippets
@@ -54,15 +63,16 @@ Snippets for things that are commonly used when making Figura avatars:
     render()
     player_init()
     Player Velocity
+
 </details>
 
 ### Blockbench Model Reader
 
-The extension will automatically look for a Blockbench model named either ``model.bbmodel`` or ``player_model.bbmodel`` to read its structure and provide autocompletion for the names of your custom model parts.
+The extension will automatically look for a Blockbench model named either `model.bbmodel` or `player_model.bbmodel` to read its structure and provide autocompletion for the names of your custom model parts.
 
 ### Libraries
 
-You can put libraries (just lua files) into ``.minecraft/figura/model_files/libraries/``. These can then be used in your script by typing ``import``. This is useful if you end up using some things in most of your avatars. Instead of copying the code from another avatar, you can just make a library out of it and import it directly while writing your script in vscode.
+You can put libraries (just lua files) into `.minecraft/figura/model_files/libraries/`. These can then be used in your script by typing `import`. This is useful if you end up using some things in most of your avatars. Instead of copying the code from another avatar, you can just make a library out of it and import it directly while writing your script in vscode.
 
 ## Lua Language Server + Figura Documentation
 
@@ -71,6 +81,6 @@ It will then automatically download the documentation from https://github.com/Gr
 
 To enable either click the popup that shows up or change the settings like so:
 
-1. Go to ``File -> Preferences -> Settings``
-2. In the menu to the left go to ``Extensions -> Figura``
-3. Check ``Use Language Server`` to enable compatibility, and if you want to automatically download the Documentation then also enable ``Check For New Documentation Version``
+1. Go to `File -> Preferences -> Settings`
+2. In the menu to the left go to `Extensions -> Figura`
+3. Check `Use Language Server` to enable compatibility, and if you want to automatically download the Documentation then also enable `Check For New Documentation Version`
