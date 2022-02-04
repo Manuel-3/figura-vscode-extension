@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const WordGroup = require('./wordgroup');
+const WordGroup = require('../wordgroup');
 const fs = require('fs');
 const path = require('path');
 
@@ -592,10 +592,10 @@ function onDidChangeActiveTextEditor() {
     let index = rootgroups.findIndex(x => x == model);
     if (index != -1) rootgroups.splice(index, 1);
     model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
-    rootgroups.push(model);
+    rootgroups.push({ group: model, ignoreCompat: true });
 
     let currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-    if (!currentlyOpenTabfilePath.endsWith('.lua')) return; // only search for a BB file if a lua script is open
+    if (!currentlyOpenTabfilePath?.endsWith('.lua')) return; // only search for a BB file if a lua script is open
     let currentlyOpenTabFolderPath;
     let bbmodelpath;
     if (currentlyOpenTabfilePath != undefined) currentlyOpenTabFolderPath = path.dirname(currentlyOpenTabfilePath);
@@ -625,7 +625,7 @@ function onDidChangeActiveTextEditor() {
                 catch {
                     vscode.window.showWarningMessage("Blockbench model not found");
                 }
-                rootgroups.push(model);
+                rootgroups.push({ group: model, ignoreCompat: true });
             }
         });
         parseBB();
@@ -644,13 +644,13 @@ function onDidChangeActiveTextEditor() {
                 // cube
                 let cube = bbmodel.elements.find(x => x.uuid == element);
                 let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Property);
-                if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) cubeword.addSubGroup(custommodelpart);
+                /*if (!settings.compatmode)*/ cubeword.addSubGroup(custommodelpart);
                 wordgroup.addSubGroup(cubeword);
             }
             else {
                 // group
                 let groupword = new WordGroup([element.name], vscode.CompletionItemKind.Property);
-                if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) groupword.addSubGroup(custommodelpart);
+                /*if (!settings.compatmode)*/ groupword.addSubGroup(custommodelpart);
                 wordgroup.addSubGroup(groupword);
                 bbmodelForeach(bbmodel, element.children, groupword);
             }
@@ -662,38 +662,38 @@ function onDidChangeActiveTextEditor() {
 
 // Add all the root groups together for export
 const rootgroups = []
-if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) {
-    // only if useLanguageServer is not enabled
-    rootgroups.push(vanilla_model);
-    rootgroups.push(armor_model);
-    rootgroups.push(elytra_model);
-    rootgroups.push(held_item_model);
-    rootgroups.push(particle);
-    rootgroups.push(sound);
-    rootgroups.push(player);
-    rootgroups.push(world);
-    rootgroups.push(vectors);
-    rootgroups.push(renderer);
-    rootgroups.push(network);
-    rootgroups.push(item_stack);
-    rootgroups.push(action_wheel);
-    rootgroups.push(keybind);
-    rootgroups.push(chat);
-    rootgroups.push(meta);
-    rootgroups.push(log);
-    rootgroups.push(logTableContent);
-    rootgroups.push(parrot_model);
-    rootgroups.push(nameplate);
-    rootgroups.push(camera);
-    rootgroups.push(client);
-    rootgroups.push(data);
-    rootgroups.push(first_person_model);
-    rootgroups.push(spyglass_model);
-    rootgroups.push(ping);
-    rootgroups.push(renderlayers);
-}
+
+// only if language server compat mode is not enabled
+rootgroups.push({ group: vanilla_model, ignoreCompat: false });
+rootgroups.push({ group: armor_model, ignoreCompat: false });
+rootgroups.push({ group: elytra_model, ignoreCompat: false });
+rootgroups.push({ group: held_item_model, ignoreCompat: false });
+rootgroups.push({ group: particle, ignoreCompat: false });
+rootgroups.push({ group: sound, ignoreCompat: false });
+rootgroups.push({ group: player, ignoreCompat: false });
+rootgroups.push({ group: world, ignoreCompat: false });
+rootgroups.push({ group: vectors, ignoreCompat: false });
+rootgroups.push({ group: renderer, ignoreCompat: false });
+rootgroups.push({ group: network, ignoreCompat: false });
+rootgroups.push({ group: item_stack, ignoreCompat: false });
+rootgroups.push({ group: action_wheel, ignoreCompat: false });
+rootgroups.push({ group: keybind, ignoreCompat: false });
+rootgroups.push({ group: chat, ignoreCompat: false });
+rootgroups.push({ group: meta, ignoreCompat: false });
+rootgroups.push({ group: log, ignoreCompat: false });
+rootgroups.push({ group: logTableContent, ignoreCompat: false });
+rootgroups.push({ group: parrot_model, ignoreCompat: false });
+rootgroups.push({ group: nameplate, ignoreCompat: false });
+rootgroups.push({ group: camera, ignoreCompat: false });
+rootgroups.push({ group: client, ignoreCompat: false });
+rootgroups.push({ group: data, ignoreCompat: false });
+rootgroups.push({ group: first_person_model, ignoreCompat: false });
+rootgroups.push({ group: spyglass_model, ignoreCompat: false });
+rootgroups.push({ group: ping, ignoreCompat: false });
+rootgroups.push({ group: renderlayers, ignoreCompat: false });
+
 // always
-rootgroups.push(model);
+rootgroups.push({ group: model, ignoreCompat: true });
 
 // load BB file at start
 onDidChangeActiveTextEditor();

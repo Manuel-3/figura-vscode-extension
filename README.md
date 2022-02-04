@@ -10,40 +10,7 @@ You can use this extension by itself for basic autocomplete, or it can download 
 
 ### Autocompletion
 
-For the following global figura variables and the API functions they provide:
-
-<details>
-    <summary>Click to expand</summary>
-
-    vanilla_model
-    armor_model
-    elytra_model
-    held_item_model
-    particle
-    sound
-    player
-    world
-    vectors
-    renderer
-    network
-    item_stack
-    action_wheel
-    keybind
-    chat
-    meta
-    log
-    logTableContent
-    parrot_model
-    nameplate
-    camera
-    client
-    data
-    first_person_model
-    spyglass_model
-    ping
-    renderlayers
-
-</details>
+Will provide autocomplete for global figura variables and their API functions.
 
 ### Snippets
 
@@ -72,15 +39,8 @@ The extension will automatically look for a Blockbench model named either `model
 
 ### Libraries
 
-You can put libraries (just lua files) into `.minecraft/figura/model_files/libraries/`. These can then be used in your script by typing `import`. This is useful if you end up using some things in most of your avatars. Instead of copying the code from another avatar, you can just make a library out of it and import it directly while writing your script in vscode.
+You can put libraries (just normal .lua files) into `.minecraft/figura/model_files/libraries/` (path can be changed in the settings). These can then be used in your script by typing `import`. This is useful if you end up using some things in most of your avatars. Instead of copying the code from another avatar, you can just make a library out of it and import it directly while writing your script in vscode.
 
 ## Lua Language Server + Figura Documentation
 
-If you have a lua language server, you can enable full documentation in the settings. (There is also a popup asking you to enable it if sumneko's language server is detected.)
-It will then automatically download the documentation from https://github.com/GrandpaScout/Figura-VSCode-Documentation into the workspace root folder.
-
-To enable either click the popup that shows up or change the settings like so:
-
-1. Go to `File -> Preferences -> Settings`
-2. In the menu to the left go to `Extensions -> Figura`
-3. Check `Use Language Server` to enable compatibility, and if you want to automatically download the Documentation then also enable `Check For New Documentation Version`
+If you have a lua language server, the extension can download lua docs automatically. By default it's going to download https://github.com/GrandpaScout/Figura-VSCode-Documentation and put it into the workspace root folder. You can put a custom download link or even a path to a local folder in the settings instead.

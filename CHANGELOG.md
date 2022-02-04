@@ -85,3 +85,12 @@
 # 0.4.7
 
 - Edited README
+
+# 0.5.0
+
+- Target Figura version in settings for internal autocomplete
+- Therefore adding back Figura-0.0.6 autocomplete as an option
+- Now checks if a .vscode folder is present to enable or disable language server support.
+- Allow custom documentation download url
+- Allow local documentation path
+- Entire library folder path can now be changed

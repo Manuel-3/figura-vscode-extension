@@ -17,7 +17,6 @@ async function fetch() {
     const obj = JSON.parse(response.body);
 
     const url = obj?.assets[0]?.browser_download_url;
-    // const url = 'https://media.forgecdn.net/files/3359/914/Xray_Ultimate_1.17_v4.1.2.zip'
 
     // check if new version is available
     const version = obj?.tag_name;
@@ -27,11 +26,11 @@ async function fetch() {
         const currentversion = fs.readFileSync(versiontxt).toString().trim();
         newVersionAvailable = (currentversion != version);
     }
-    
+
     if (!newVersionAvailable) return;
 
     if (url) {
-        vscode.window.showInformationMessage("Downloading latest Figura Documentation");
+        vscode.window.showInformationMessage("Downloading Figura documentation");
         // remove old documentation
         if (fs.existsSync(destination_dir)) {
             fs.readdir(destination_dir, (err, files) => {
@@ -44,12 +43,12 @@ async function fetch() {
                     }
                 });
                 // download new documentation after removing old one
-                download(url);
+                download(url, destination_dir);
             });
         }
         else {
             // download new documentation if it doesnt exist
-            download(url);
+            download(url, destination_dir);
         }
     }
     else {
@@ -57,46 +56,46 @@ async function fetch() {
     }
 }
 
-function download(url) {
+function download(url, destination) {
     // create new directory
-    if (!fs.existsSync(destination_dir)) {
-        fs.mkdirSync(destination_dir);
+    if (!fs.existsSync(destination)) {
+        fs.mkdirSync(destination);
     }
-    const target = path.join(destination_dir, "/FiguraDoc.zip");
+    const target = path.join(destination, "/FiguraDoc.zip");
     const file = fs.createWriteStream(target);
     // download and pipe into file
     got.stream(url)
         .pipe(file)
         .on('error', function (err) {
             console.log(err);
-            vscode.window.showErrorMessage("Could not download latest documentation");
+            vscode.window.showErrorMessage("Could not download documentation");
         });
     // when done downloading, extract
     file.on('close', async () => {
         try {
-            await extract(target, { dir: destination_dir })
+            await extract(target, { dir: destination })
             // copy the .vscode/.vscode folder to .vscode
-            fs.copy(path.join(destination_dir,'.vscode'), destination_dir, { overwrite: true }, function (err) {
+            fs.copy(path.join(destination, '.vscode'), destination, { overwrite: true }, function (err) {
                 if (err) {
                     console.log(err);
                     vscode.window.showErrorMessage("Could not copy files");
                 }
                 else {
                     vscode.window
-                    .showInformationMessage('Latest Figura Documentation is now installed', 'Open Settings')
-                    .then(selection => {
-                        if (selection == 'Open Settings') {
-                            vscode.env.openExternal(vscode.Uri.parse('https://github.com/GrandpaScout/Figura-VSCode-Documentation#the-settings'));
-                            vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination_dir,'/settings.json')))
-                            .then((a) => {
-                                vscode.window.showTextDocument(a);
-                            });
-                        }
-                    });
+                        .showInformationMessage('Figura documentation is now installed', 'Open Settings')
+                        .then(selection => {
+                            if (selection == 'Open Settings') {
+                                // vscode.env.openExternal(vscode.Uri.parse('https://github.com/GrandpaScout/Figura-VSCode-Documentation#the-settings'));
+                                vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination, '/settings.json')))
+                                    .then((a) => {
+                                        vscode.window.showTextDocument(a);
+                                    });
+                            }
+                        });
                     // remove the .vscode/.vscode folder
-                    fs.rmSync(path.join(destination_dir,'.vscode'), { recursive: true });
+                    fs.rmSync(path.join(destination, '.vscode'), { recursive: true });
                 }
-                
+
             });
             // when done extracting delete zip file
             fs.unlink(target, (err) => {
@@ -109,7 +108,7 @@ function download(url) {
     // file write error
     file.on('error', (err) => {
         console.log(err);
-        vscode.window.showErrorMessage("Could not save latest documentation");
+        vscode.window.showErrorMessage("Could not save documentation");
     });
 }
 

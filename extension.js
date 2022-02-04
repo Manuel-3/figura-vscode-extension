@@ -1,57 +1,90 @@
 const vscode = require('vscode');
-const parser = require('./parser');
-const rootgroups = require('./rootgroups');
-const downloader = require('./downloader');
-const libraries = require('./libraries').getLibraries();
+const fs = require('fs');
+const fs_extra = require('fs-extra');
+const path = require('path');
+const parser = require('./src/parser');
+const rootgroups = require('./src/rootgroups/' + vscode.workspace.getConfiguration('figura').get('targetFiguraVersion'));
+const downloader = require('./src/downloader');
+const libraries = require('./src/libraries').getLibraries();
+
+let intervalID;
+let compatmode = false;
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
 
-	if (vscode.workspace.getConfiguration('figura').get('checkForNewDocumentationVersion')) {
-		downloader.fetch();
-		let sumnekolua = vscode.extensions.all.find(x => x.id == 'sumneko.lua');
-		if (sumnekolua != undefined) {
-			if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) {
-				vscode.window.showInformationMessage('Enabled Lua Language Server support.');
-				await vscode.workspace.getConfiguration('figura').update('useLanguageServer', true, vscode.ConfigurationTarget.Global);
-			}
+	if (vscode.workspace.getConfiguration('figura').get('documentation.enableDocumentation')) {
+		const destination_dir = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode');
+		switch (vscode.workspace.getConfiguration('figura').get('documentation.source')) {
+			case 'Default':
+				downloader.fetch();
+				break;
+			case 'Custom':
+				if (vscode.workspace.workspaceFolders != undefined) {
+					if (!fs.existsSync(destination_dir)) {
+						downloader.download(vscode.workspace.getConfiguration('figura').get('documentation.customDownloadUrl'), destination_dir);
+					}
+				}
+				break;
+			case 'Local':
+				if (vscode.workspace.workspaceFolders != undefined) {
+					if (!fs.existsSync(destination_dir)) {
+						fs_extra.copySync(vscode.workspace.getConfiguration('figura').get('documentation.localPath'), destination_dir);
+					}
+				}
+				break;
+			default:
+				break;
 		}
-		else {
-			vscode.window.showInformationMessage('Figura extension works best with a Lua Language Server installed, please consider adding one!', 'Install', 'Maybe later').then(selection => {
+
+		let sumnekolua = vscode.extensions.all.find(x => x.id == 'sumneko.lua');
+		if (sumnekolua == undefined) {
+			vscode.window.showInformationMessage('Figura extension works best with a Lua Language Server!', 'Install', 'Maybe later').then(selection => {
 				if (selection == 'Install') {
 					vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('vscode:extension/sumneko.lua'));
 				}
 			});
 		}
-	}
 
-	if (vscode.workspace.getConfiguration('figura').get('useLanguageServer')) {
 		if ((vscode.workspace.workspaceFolders == undefined)) {
 			vscode.window.showWarningMessage('To use the Language Server Figura Documentation, you must open a workspace or folder.');
 		}
+
+		intervalID = setInterval(() => {
+			if (vscode.workspace.workspaceFolders != undefined) {
+				fs.exists(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode'), exists => {
+					if (exists) {
+						compatmode = true;
+					}
+					else {
+						compatmode = false;
+					}
+				});
+			}
+			else {
+				compatmode = false;
+
+			}
+		}, 8000);
 	}
-	// else {
-	// 	let sumnekolua = vscode.extensions.all.find(x => x.id == 'sumneko.lua');
-	// 	if (sumnekolua != undefined) {
-	// 		vscode.window.showWarningMessage('Sumneko\'s Language Server detected! Please enable compatibility in the settings or remove the language server.');
-	// 	}
-	// }
 
 	const rootnodeprovider = vscode.languages.registerCompletionItemProvider(
 		'lua',
 		{
 			provideCompletionItems(document, position, token, context) {
+
 				let items = [];
 				const linePrefix = document.lineAt(position).text.substr(0, position.character);
 
 				if (linePrefix.match(/\.\w+$/)) return [];
 
 				for (let i = 0; i < rootgroups.length; i++) {
-					let item = new vscode.CompletionItem(rootgroups[i].words[0], rootgroups[i].type);
+					let item = new vscode.CompletionItem(rootgroups[i].group.words[0], rootgroups[i].group.type);
 					item.commitCharacters = ['.'];
-					items.push(item);
+					if (!compatmode || rootgroups[i].ignoreCompat)
+						items.push(item);
 				}
 
 				return items;
@@ -63,11 +96,13 @@ async function activate(context) {
 		'lua',
 		{
 			provideCompletionItems(document, position, token, context) {
+
 				let items = [];
 				const linePrefix = document.lineAt(position).text.substr(0, position.character);
 
 				for (let i = 0; i < rootgroups.length; i++) {
-					items = items.concat(browse(document, position, linePrefix, rootgroups[i].subgroups, '\\b' + rootgroups[i].words[0] + '\\.'));
+					if (!compatmode || rootgroups[i].ignoreCompat)
+						items = items.concat(browse(document, position, linePrefix, rootgroups[i].group.subgroups, '\\b' + rootgroups[i].group.words[0] + '\\.'));
 				}
 
 				return items;
@@ -114,7 +149,7 @@ async function activate(context) {
 		'lua',
 		{
 			provideCompletionItems(document, position, token, context) {
-				if (vscode.workspace.getConfiguration('figura').get('useLanguageServer')) return;
+				if (compatmode) return;
 
 				// remove the current line to not include what is currently being typed in the results
 				const lines = document.getText().split('\n');
