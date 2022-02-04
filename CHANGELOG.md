@@ -94,3 +94,7 @@
 - Allow custom documentation download url
 - Allow local documentation path
 - Entire library folder path can now be changed
+
+# 0.5.1
+
+- Fix bug with multiplying model part suggestions

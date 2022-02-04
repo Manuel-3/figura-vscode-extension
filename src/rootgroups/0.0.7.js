@@ -589,7 +589,7 @@ function onDidChangeActiveTextEditor() {
     if (filewatcher != undefined) filewatcher.close();
 
     // reset model
-    let index = rootgroups.findIndex(x => x == model);
+    let index = rootgroups.findIndex(x => x.group == model);
     if (index != -1) rootgroups.splice(index, 1);
     model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
     rootgroups.push({ group: model, ignoreCompat: true });
@@ -613,7 +613,7 @@ function onDidChangeActiveTextEditor() {
                 console.log(`${filename} file Changed`);
 
                 // reset model
-                let index = rootgroups.findIndex(x => x == model);
+                let index = rootgroups.findIndex(x => x.group == model);
                 if (index != -1) rootgroups.splice(index, 1);
                 model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
 
