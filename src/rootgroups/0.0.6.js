@@ -392,7 +392,7 @@ function onDidChangeActiveTextEditor() {
     }
 
     function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
-        currentgroup.forEach(element => {
+        currentgroup?.forEach(element => {
             if (typeof (element) == 'string') {
                 // cube
                 let cube = bbmodel.elements.find(x => x.uuid == element);

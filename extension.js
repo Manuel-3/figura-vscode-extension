@@ -122,6 +122,8 @@ async function activate(context) {
 			for (let n = 0; n < group.words.length; n++) {
 				let hasSpaces = group.words[n].includes(' ');
 				if (linePrefix.match(new RegExp(pattern + '$')) && group.showSuggestion) {
+					if (compatmode && group.type == vscode.CompletionItemKind.Method) continue; // in compat mode dont show methods, even when ignoreCompat is true
+
 					let item = new vscode.CompletionItem(group.words[n], group.type);
 					if (hasSpaces) {
 						item.insertText = '["' + group.words[n] + '"]';

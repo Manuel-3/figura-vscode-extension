@@ -98,3 +98,7 @@
 # 0.5.1
 
 - Fix bug with multiplying model part suggestions
+
+# 0.5.2
+
+- Add Figura-0.0.8 (animations only) target

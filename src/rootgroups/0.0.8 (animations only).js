@@ -33,6 +33,7 @@ const first_person_model = new WordGroup(['first_person_model'], vscode.Completi
 const spyglass_model = new WordGroup(['spyglass_model'], vscode.CompletionItemKind.Field);
 const ping = new WordGroup(['ping'], vscode.CompletionItemKind.Field);
 const renderlayers = new WordGroup(['renderlayers'], vscode.CompletionItemKind.Field);
+let animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
 
 vanilla_model.addSubGroup(new WordGroup([
     'HEAD',
@@ -577,6 +578,39 @@ renderlayers.addSubGroup(new WordGroup([
     'GL_INVERT',
 ], vscode.CompletionItemKind.Property));
 
+const animationrootmethods = new WordGroup([
+    'listAnimations',
+    'stopAll',
+    'ceaseAll',
+], vscode.CompletionItemKind.Method);
+
+const animationmethods = new WordGroup([
+    'start',
+    'stop',
+    'play',
+    'cease',
+    'pause',
+    'isPlaying',
+    'setPlayState',
+    'getPlayState',
+    'setLength',
+    'getLength',
+    'setSpeed',
+    'getSpeed',
+    'setLoopMode',
+    'getLoopMode',
+    'setStartOffset',
+    'getStartOffset',
+    'setBlendWeight',
+    'getBlendWeight',
+    'setStartDelay',
+    'getStartDelay',
+    'setLoopDelay',
+    'getLoopDelay',
+    'setBlendTime',
+    'getBlendTime',
+], vscode.CompletionItemKind.Method);
+
 // ------ watch blockbench file begin ------
 
 let filewatcher;
@@ -594,6 +628,12 @@ function onDidChangeActiveTextEditor() {
     model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
     rootgroups.push({ group: model, ignoreCompat: true });
 
+    // reset animation
+    index = rootgroups.findIndex(x => x.group == animation);
+    if (index != -1) rootgroups.splice(index, 1);
+    animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
+    rootgroups.push({ group: animation, ignoreCompat: true });
+
     let currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
     if (!currentlyOpenTabfilePath?.endsWith('.lua')) return; // only search for a BB file if a lua script is open
     let currentlyOpenTabFolderPath;
@@ -610,12 +650,17 @@ function onDidChangeActiveTextEditor() {
                 fsWait = setTimeout(() => {
                     fsWait = false;
                 }, 100);
-                console.log(`${filename} file Changed`);
+                console.log(`${filename} file changed`);
 
                 // reset model
                 let index = rootgroups.findIndex(x => x.group == model);
                 if (index != -1) rootgroups.splice(index, 1);
                 model = new WordGroup(['model'], vscode.CompletionItemKind.Field);
+
+                // reset animation
+                index = rootgroups.findIndex(x => x.group == animation);
+                if (index != -1) rootgroups.splice(index, 1);
+                animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
 
                 // parse new model
                 try {
@@ -626,6 +671,7 @@ function onDidChangeActiveTextEditor() {
                     vscode.window.showWarningMessage("Blockbench model not found");
                 }
                 rootgroups.push({ group: model, ignoreCompat: true });
+                rootgroups.push({ group: animation, ignoreCompat: true });
             }
         });
         parseBB();
@@ -636,6 +682,12 @@ function onDidChangeActiveTextEditor() {
     function parseBB() {
         let bbmodel = JSON.parse(fs.readFileSync(bbmodelpath).toString());
         bbmodelForeach(bbmodel, bbmodel.outliner, model);
+        bbmodel.animations?.forEach(anim => {
+            const animationWordGroup = new WordGroup([anim.name], vscode.CompletionItemKind.Property);
+            animationWordGroup.addSubGroup(animationmethods);
+            animation.addSubGroup(animationWordGroup);
+        });
+        animation.addSubGroup(animationrootmethods);
     }
 
     function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
@@ -694,6 +746,7 @@ rootgroups.push({ group: renderlayers, ignoreCompat: false });
 
 // always
 rootgroups.push({ group: model, ignoreCompat: true });
+rootgroups.push({ group: animation, ignoreCompat: true });
 
 // load BB file at start
 onDidChangeActiveTextEditor();

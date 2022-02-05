@@ -27,10 +27,11 @@
         },
         "figura.targetFiguraVersion": {
           "type": "string",
-          "default": "0.0.6",
+          "default": "0.0.7",
           "enum": [
             "0.0.6",
-            "0.0.7"
+            "0.0.7",
+            "0.0.8 (animations only)"
           ],
           "description": "Target Figura version for internal autocomplete. Only works if documentation is disabled. Requires reloading the window.",
           "order": 2
