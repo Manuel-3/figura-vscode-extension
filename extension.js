@@ -15,30 +15,9 @@ let compatmode = false;
  */
 async function activate(context) {
 
-	if (vscode.workspace.getConfiguration('figura').get('documentation.enableDocumentation')) {
-		const destination_dir = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode');
-		switch (vscode.workspace.getConfiguration('figura').get('documentation.source')) {
-			case 'Default':
-				downloader.fetch();
-				break;
-			case 'Custom':
-				if (vscode.workspace.workspaceFolders != undefined) {
-					if (!fs.existsSync(destination_dir)) {
-						downloader.download(vscode.workspace.getConfiguration('figura').get('documentation.customDownloadUrl'), destination_dir);
-					}
-				}
-				break;
-			case 'Local':
-				if (vscode.workspace.workspaceFolders != undefined) {
-					if (!fs.existsSync(destination_dir)) {
-						fs_extra.copySync(vscode.workspace.getConfiguration('figura').get('documentation.localPath'), destination_dir);
-					}
-				}
-				break;
-			default:
-				break;
-		}
+	compatmode = vscode.workspace.getConfiguration('figura').get('documentation.enableDocumentation');
 
+	if (compatmode) {
 		let sumnekolua = vscode.extensions.all.find(x => x.id == 'sumneko.lua');
 		if (sumnekolua == undefined) {
 			vscode.window.showInformationMessage('Figura extension works best with a Lua Language Server!', 'Install', 'Maybe later').then(selection => {
@@ -47,27 +26,51 @@ async function activate(context) {
 				}
 			});
 		}
-
-		if ((vscode.workspace.workspaceFolders == undefined)) {
+		if (vscode.workspace.workspaceFolders == undefined) {
 			vscode.window.showWarningMessage('To use the Language Server Figura Documentation, you must open a workspace or folder.');
 		}
+	}
 
-		intervalID = setInterval(() => {
-			if (vscode.workspace.workspaceFolders != undefined) {
-				fs.exists(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode'), exists => {
-					if (exists) {
-						compatmode = true;
+	if (vscode.workspace.workspaceFolders != undefined) {
+		const destination_dir = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode');
+		if (compatmode) {
+			switch (vscode.workspace.getConfiguration('figura').get('documentation.source')) {
+				case 'Default':
+					downloader.fetch();
+					break;
+				case 'Custom':
+					if (vscode.workspace.workspaceFolders != undefined) {
+						if (!fs.existsSync(destination_dir)) {
+							downloader.download(vscode.workspace.getConfiguration('figura').get('documentation.customDownloadUrl'), destination_dir);
+						}
 					}
-					else {
-						compatmode = false;
+					break;
+				case 'Local':
+					if (vscode.workspace.workspaceFolders != undefined) {
+						if (!fs.existsSync(destination_dir)) {
+							try {
+								fs_extra.copySync(vscode.workspace.getConfiguration('figura').get('documentation.localPath'), destination_dir);
+								vscode.window
+									.showInformationMessage('Figura documentation is now installed', 'Open Settings')
+									.then(selection => {
+										if (selection == 'Open Settings') {
+											vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination_dir, '/settings.json')))
+												.then((a) => {
+													vscode.window.showTextDocument(a);
+												});
+										}
+									});
+							}
+							catch (error) {
+								vscode.window.showWarningMessage('Could not copy documentation from custom path.');
+							}
+						}
 					}
-				});
+					break;
+				default:
+					break;
 			}
-			else {
-				compatmode = false;
-
-			}
-		}, 8000);
+		}
 	}
 
 	const rootnodeprovider = vscode.languages.registerCompletionItemProvider(

@@ -90,7 +90,7 @@
 
 - Target Figura version in settings for internal autocomplete
 - Therefore adding back Figura-0.0.6 autocomplete as an option
-- Now checks if a .vscode folder is present to enable or disable language server support.
+- Now checks if a .vscode folder is present to enable or disable language server support
 - Allow custom documentation download url
 - Allow local documentation path
 - Entire library folder path can now be changed
@@ -102,3 +102,9 @@
 # 0.5.2
 
 - Add Figura-0.0.8 (animations only) target
+
+# 0.5.3
+
+- Instead of checking for a .vscode folder now uses the enable documentation setting to enable or disable language server compatibility mode
+- Add Figura-0.0.8-rc.6 target
+- Fix bug with showing workspace notification

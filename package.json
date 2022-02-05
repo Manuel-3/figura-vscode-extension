@@ -31,7 +31,8 @@
           "enum": [
             "0.0.6",
             "0.0.7",
-            "0.0.8 (animations only)"
+            "0.0.8 (animations only)",
+            "0.0.8-rc.6"
           ],
           "description": "Target Figura version for internal autocomplete. Only works if documentation is disabled. Requires reloading the window.",
           "order": 2
@@ -39,7 +40,7 @@
         "figura.documentation.enableDocumentation": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically download Figura documentation to the workspace.",
+          "description": "Automatically download Figura documentation to the workspace and enable compatibility mode.",
           "order": 3
         },
         "figura.documentation.source": {

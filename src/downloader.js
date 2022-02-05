@@ -30,7 +30,7 @@ async function fetch() {
     if (!newVersionAvailable) return;
 
     if (url) {
-        vscode.window.showInformationMessage("Downloading Figura documentation");
+        // vscode.window.showInformationMessage("Downloading Figura documentation");
         // remove old documentation
         if (fs.existsSync(destination_dir)) {
             fs.readdir(destination_dir, (err, files) => {
@@ -57,6 +57,8 @@ async function fetch() {
 }
 
 function download(url, destination) {
+    let success = true;
+
     // create new directory
     if (!fs.existsSync(destination)) {
         fs.mkdirSync(destination);
@@ -64,15 +66,28 @@ function download(url, destination) {
     const target = path.join(destination, "/FiguraDoc.zip");
     const file = fs.createWriteStream(target);
     // download and pipe into file
-    got.stream(url)
-        .pipe(file)
-        .on('error', function (err) {
-            console.log(err);
-            vscode.window.showErrorMessage("Could not download documentation");
-        });
+
+    try {
+        const stream = got.stream(url);
+        stream.pipe(file)
+            .on('error', function (err) {
+                console.log(err);
+                vscode.window.showErrorMessage("Could not save documentation");
+            });
+    }
+    catch (error) {
+        success = false;
+        file.close();
+    }
     // when done downloading, extract
     file.on('close', async () => {
         try {
+            if (!success) {
+                fs.rmSync(destination, { recursive: true });
+                vscode.window.showWarningMessage('Could not download documentation.');
+                return;
+            }
+
             await extract(target, { dir: destination })
             // copy the .vscode/.vscode folder to .vscode
             fs.copy(path.join(destination, '.vscode'), destination, { overwrite: true }, function (err) {
