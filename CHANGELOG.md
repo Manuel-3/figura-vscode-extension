@@ -108,3 +108,9 @@
 - Instead of checking for a .vscode folder now uses the enable documentation setting to enable or disable language server compatibility mode
 - Add Figura-0.0.8-rc.6 target
 - Fix bug with showing workspace notification
+
+# 0.5.4
+
+- Can now autocomplete after a method call
+- Add Figura-0.0.8-rc.7 target
+- Fix Figura-0.0.8-rc.6 target

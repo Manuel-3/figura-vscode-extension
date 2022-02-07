@@ -630,10 +630,10 @@ const animationrootmethods = new WordGroup([
 
 const animationmethods = new WordGroup([
     'start',
-    'stop',
     'play',
-    'cease',
     'pause',
+    'stop',
+    'cease',
     'isPlaying',
     'setPlayState',
     'getPlayState',
@@ -653,9 +653,13 @@ const animationmethods = new WordGroup([
     'getLoopDelay',
     'setBlendTime',
     'getBlendTime',
+    'setOverride',
+    'getOverride',
+    'setReplace',
+    'getReplace'
 ], vscode.CompletionItemKind.Method);
 
-const biomeTable = new WordGroup([
+biomeTable = new WordGroup([
     'getBiome'
 ], vscode.CompletionItemKind.Method);
 
@@ -666,6 +670,7 @@ biomeTable.addSubGroup(new WordGroup([
     'getPrecipitation',
     'getSkyColor',
     'getFoliageColor',
+    'getGrassColor',
     'getFogColor',
     'getWaterColor',
     'getWaterFogColor',

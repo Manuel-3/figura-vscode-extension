@@ -101,7 +101,7 @@ async function activate(context) {
 			provideCompletionItems(document, position, token, context) {
 
 				let items = [];
-				const linePrefix = document.lineAt(position).text.substr(0, position.character);
+				const linePrefix = document.lineAt(position).text.substr(0, position.character).replace(/\([^)]*\)/g, ''); // remove anything inside ()
 
 				for (let i = 0; i < rootgroups.length; i++) {
 					if (!compatmode || rootgroups[i].ignoreCompat)

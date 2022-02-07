@@ -32,7 +32,8 @@
             "0.0.6",
             "0.0.7",
             "0.0.8 (animations only)",
-            "0.0.8-rc.6"
+            "0.0.8-rc.6",
+            "0.0.8-rc.7"
           ],
           "description": "Target Figura version for internal autocomplete. Only works if documentation is disabled. Requires reloading the window.",
           "order": 2
