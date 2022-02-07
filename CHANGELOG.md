@@ -114,3 +114,7 @@
 - Can now autocomplete after a method call
 - Add Figura-0.0.8-rc.7 target
 - Fix Figura-0.0.8-rc.6 target
+
+# 0.5.5
+
+- Add Figura-0.0.8-rc.9 target
