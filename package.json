@@ -2,7 +2,7 @@
   "name": "figura",
   "displayName": "Figura",
   "description": "Figura Script Helper",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "engines": {
     "vscode": "^1.58.0"
   },
