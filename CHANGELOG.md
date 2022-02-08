@@ -122,3 +122,7 @@
 # 0.5.6
 
 - Changed documentation source settings to allow different sources per target version
+
+# 0.5.7
+
+- Fix sometimes not showing "documentation now installed" popup

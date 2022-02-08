@@ -88,7 +88,13 @@ function download(url, destination) {
                 return;
             }
 
-            await extract(target, { dir: destination })
+            await extract(target, { dir: destination });
+
+            // when done extracting delete zip file
+            fs.unlink(target, (err) => {
+                if (err) console.log(err.message);
+            });
+
             // copy the .vscode/.vscode folder to .vscode
             fs.copy(path.join(destination, '.vscode'), destination, { overwrite: true }, function (err) {
                 if (err) {
@@ -100,7 +106,9 @@ function download(url, destination) {
                     // remove the .vscode/.vscode folder (in case it exists)
                     fs.rmSync(path.join(destination, '.vscode'), { recursive: true }).catch(console.error);
                 }
-                vscode.window
+            });
+
+            vscode.window
                 .showInformationMessage('Figura documentation is now installed', 'Open Settings')
                 .then(selection => {
                     if (selection == 'Open Settings') {
@@ -111,11 +119,6 @@ function download(url, destination) {
                             });
                     }
                 });
-            });
-            // when done extracting delete zip file
-            fs.unlink(target, (err) => {
-                if (err) console.log(err.message);
-            });
         } catch (err) {
             console.log(err);
         }
