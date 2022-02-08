@@ -126,3 +126,7 @@
 # 0.5.7
 
 - Fix sometimes not showing "documentation now installed" popup
+
+# 0.5.8
+
+- Removed redundancy in setting description
