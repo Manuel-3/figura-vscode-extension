@@ -93,24 +93,24 @@ function download(url, destination) {
             fs.copy(path.join(destination, '.vscode'), destination, { overwrite: true }, function (err) {
                 if (err) {
                     console.log(err);
-                    vscode.window.showErrorMessage("Could not copy files");
+                    // Error message not necessary, could be that there just isnt a subfolder and instead the files are just directly in there
+                    // vscode.window.showErrorMessage("Could not copy files");
                 }
                 else {
-                    vscode.window
-                        .showInformationMessage('Figura documentation is now installed', 'Open Settings')
-                        .then(selection => {
-                            if (selection == 'Open Settings') {
-                                // vscode.env.openExternal(vscode.Uri.parse('https://github.com/GrandpaScout/Figura-VSCode-Documentation#the-settings'));
-                                vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination, '/settings.json')))
-                                    .then((a) => {
-                                        vscode.window.showTextDocument(a);
-                                    });
-                            }
-                        });
-                    // remove the .vscode/.vscode folder
-                    fs.rmSync(path.join(destination, '.vscode'), { recursive: true });
+                    // remove the .vscode/.vscode folder (in case it exists)
+                    fs.rmSync(path.join(destination, '.vscode'), { recursive: true }).catch(console.error);
                 }
-
+                vscode.window
+                .showInformationMessage('Figura documentation is now installed', 'Open Settings')
+                .then(selection => {
+                    if (selection == 'Open Settings') {
+                        // vscode.env.openExternal(vscode.Uri.parse('https://github.com/GrandpaScout/Figura-VSCode-Documentation#the-settings'));
+                        vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination, '/settings.json')))
+                            .then((a) => {
+                                vscode.window.showTextDocument(a);
+                            });
+                    }
+                });
             });
             // when done extracting delete zip file
             fs.unlink(target, (err) => {

@@ -36,7 +36,7 @@
             "0.0.8-rc.7",
             "0.0.8-rc.9"
           ],
-          "description": "Target Figura version for internal autocomplete. Only works if documentation is disabled. Requires reloading the window.",
+          "description": "Target Figura version. Requires reloading the the window on change.",
           "order": 2
         },
         "figura.documentation.enableDocumentation": {
@@ -45,28 +45,34 @@
           "description": "Automatically download Figura documentation to the workspace and enable compatibility mode.",
           "order": 3
         },
-        "figura.documentation.source": {
-          "type": "string",
-          "enum": [
-            "Default",
-            "Custom",
-            "Local"
-          ],
-          "default": "Default",
-          "description": "Select where to get the documentation from.",
-          "order": 4
-        },
-        "figura.documentation.customDownloadUrl": {
-          "type": "string",
-          "default": "",
-          "description": "If documentation source is custom, it will download from here instead.",
+        "figura.documentation.sources": {
+          "type": "object",
+          "properties": {
+            "Default": {
+              "type": "string"
+            },
+            "0.0.6": {
+              "type": "string"
+            },
+            "0.0.7": {
+              "type": "string"
+            },
+            "0.0.8 (animations only)": {
+              "type": "string"
+            },
+            "0.0.8-rc.6": {
+              "type": "string"
+            },
+            "0.0.8-rc.7": {
+              "type": "string"
+            },
+            "0.0.8-rc.9": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Documentation source for each Figura version. Can be either a URL or a folder path.",
           "order": 5
-        },
-        "figura.documentation.localPath": {
-          "type": "string",
-          "default": "",
-          "description": "If documentation source is local, it will copy this folder into your workspace.",
-          "order": 6
         }
       }
     },

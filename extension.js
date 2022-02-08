@@ -1,9 +1,10 @@
 const vscode = require('vscode');
+const targetFiguraVersion = vscode.workspace.getConfiguration('figura').get('targetFiguraVersion');
 const fs = require('fs');
 const fs_extra = require('fs-extra');
 const path = require('path');
 const parser = require('./src/parser');
-const rootgroups = require('./src/rootgroups/' + vscode.workspace.getConfiguration('figura').get('targetFiguraVersion'));
+const rootgroups = require('./src/rootgroups/' + targetFiguraVersion);
 const downloader = require('./src/downloader');
 const libraries = require('./src/libraries').getLibraries();
 
@@ -34,41 +35,42 @@ async function activate(context) {
 	if (vscode.workspace.workspaceFolders != undefined) {
 		const destination_dir = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '/.vscode');
 		if (compatmode) {
-			switch (vscode.workspace.getConfiguration('figura').get('documentation.source')) {
-				case 'Default':
-					downloader.fetch();
-					break;
-				case 'Custom':
-					if (vscode.workspace.workspaceFolders != undefined) {
-						if (!fs.existsSync(destination_dir)) {
-							downloader.download(vscode.workspace.getConfiguration('figura').get('documentation.customDownloadUrl'), destination_dir);
-						}
+			const sources = vscode.workspace.getConfiguration('figura').get('documentation.sources');
+			let source = sources[targetFiguraVersion];
+			if (source == undefined) {
+				source = sources["Default"];
+			}
+			console.log('Docs source: ' + source);
+			if (source == undefined) {
+				console.log("Using default docs");
+				downloader.fetch();
+			}
+			else if (fs.existsSync(source)) {
+				if (!fs.existsSync(destination_dir)) {
+					try {
+						console.log("Using local path");
+						fs_extra.copySync(source, destination_dir);
+						vscode.window
+							.showInformationMessage('Figura documentation is now installed', 'Open Settings')
+							.then(selection => {
+								if (selection == 'Open Settings') {
+									vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination_dir, '/settings.json')))
+										.then((a) => {
+											vscode.window.showTextDocument(a);
+										});
+								}
+							});
 					}
-					break;
-				case 'Local':
-					if (vscode.workspace.workspaceFolders != undefined) {
-						if (!fs.existsSync(destination_dir)) {
-							try {
-								fs_extra.copySync(vscode.workspace.getConfiguration('figura').get('documentation.localPath'), destination_dir);
-								vscode.window
-									.showInformationMessage('Figura documentation is now installed', 'Open Settings')
-									.then(selection => {
-										if (selection == 'Open Settings') {
-											vscode.workspace.openTextDocument(vscode.Uri.file(path.join(destination_dir, '/settings.json')))
-												.then((a) => {
-													vscode.window.showTextDocument(a);
-												});
-										}
-									});
-							}
-							catch (error) {
-								vscode.window.showWarningMessage('Could not copy documentation from custom path.');
-							}
-						}
+					catch (error) {
+						vscode.window.showWarningMessage('Could not copy documentation from custom path.');
 					}
-					break;
-				default:
-					break;
+				}
+			}
+			else {
+				if (!fs.existsSync(destination_dir)) {
+					console.log("Using custom download");
+					downloader.download(source, destination_dir);
+				}
 			}
 		}
 	}

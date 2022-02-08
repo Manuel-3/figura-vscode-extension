@@ -118,3 +118,7 @@
 # 0.5.5
 
 - Add Figura-0.0.8-rc.9 target
+
+# 0.5.6
+
+- Changed documentation source settings to allow different sources per target version

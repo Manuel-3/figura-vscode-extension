@@ -397,13 +397,13 @@ function onDidChangeActiveTextEditor() {
                 // cube
                 let cube = bbmodel.elements.find(x => x.uuid == element);
                 let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Property);
-                if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) cubeword.addSubGroup(custommodelpart);
+                cubeword.addSubGroup(custommodelpart);
                 wordgroup.addSubGroup(cubeword);
             }
             else {
                 // group
                 let groupword = new WordGroup([element.name], vscode.CompletionItemKind.Property);
-                if (!vscode.workspace.getConfiguration('figura').get('useLanguageServer')) groupword.addSubGroup(custommodelpart);
+                groupword.addSubGroup(custommodelpart);
                 wordgroup.addSubGroup(groupword);
                 bbmodelForeach(bbmodel, element.children, groupword);
             }
