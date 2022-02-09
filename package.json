@@ -34,7 +34,8 @@
             "0.0.8 (animations only)",
             "0.0.8-rc.6",
             "0.0.8-rc.7",
-            "0.0.8-rc.9"
+            "0.0.8-rc.9",
+            "0.0.8-rc.10"
           ],
           "description": "Requires reloading the the window on change.",
           "order": 2

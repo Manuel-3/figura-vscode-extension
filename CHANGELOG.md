@@ -130,3 +130,7 @@
 # 0.5.8
 
 - Removed redundancy in setting description
+
+# 0.5.9
+
+- Add Figura-0.0.8-rc.10 target
