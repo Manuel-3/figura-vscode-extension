@@ -16,22 +16,20 @@ Will provide autocomplete for global figura variables and their API functions.
 
 Snippets for things that are commonly used when making Figura avatars:
 
-<details>
-    <summary>Click to expand</summary>
-
-    Hide Model
-    Warnings
-    Sine Wave
-    Smooth Animation
-    Lerp
-    Clamp
-    Timer
-    tick()
-    render()
-    player_init()
-    Player Velocity
-
-</details>
+```
+Player Velocity
+Hide Model
+Warnings
+Sine Wave
+Smooth Animation
+Lerp
+Clamp
+Timer
+tick()
+render()
+world_render()
+player_init()
+```
 
 ### Blockbench Model Reader
 

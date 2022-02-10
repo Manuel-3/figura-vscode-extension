@@ -134,3 +134,8 @@
 # 0.5.9
 
 - Add Figura-0.0.8-rc.10 target
+
+# 0.5.10
+
+- Attempt to fix readme rendering bug
+- Add world_render snippet

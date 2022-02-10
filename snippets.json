@@ -62,6 +62,13 @@
     ],
     "description": "Inserts the render function."
   },
+  "World Render function": {
+    "prefix": "world_render()",
+    "body": [
+      "function world_render(delta)\n    ${0}\nend"
+    ],
+    "description": "Inserts the world_render function."
+  },
   "Player Init function": {
     "prefix": "player_init()",
     "body": [
