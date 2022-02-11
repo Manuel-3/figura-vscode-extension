@@ -139,3 +139,7 @@
 
 - Attempt to fix readme rendering bug
 - Add world_render snippet
+
+# 0.5.11
+
+- Second attempt to fix readme rendering bug

@@ -16,6 +16,9 @@ Will provide autocomplete for global figura variables and their API functions.
 
 Snippets for things that are commonly used when making Figura avatars:
 
+<details>
+<summary>Click to expand</summary>
+
 ```
 Player Velocity
 Hide Model
@@ -30,6 +33,8 @@ render()
 world_render()
 player_init()
 ```
+
+</details>
 
 ### Blockbench Model Reader
 
