@@ -143,3 +143,7 @@
 # 0.5.11
 
 - Second attempt to fix readme rendering bug
+
+# 0.5.12
+
+- Add 0.0.8-rc.10 to the figura.documentation.sources list
