@@ -147,3 +147,7 @@
 # 0.5.12
 
 - Add 0.0.8-rc.10 to the figura.documentation.sources list
+
+# 0.5.13
+
+- Make settings descriptions a bit more clear

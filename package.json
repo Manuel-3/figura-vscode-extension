@@ -43,7 +43,7 @@
         "figura.documentation.enableDocumentation": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically download Figura documentation to the workspace and enable compatibility mode.",
+          "description": "Automatically add Figura documentation to the workspace and enable compatibility mode.",
           "order": 3
         },
         "figura.documentation.sources": {
@@ -75,7 +75,7 @@
             }
           },
           "additionalProperties": false,
-          "description": "Documentation source for each Figura version. Can be either a URL or a folder path.",
+          "description": "Custom source from where to get the documentation for each version. Can be either a URL or a folder path.",
           "order": 5
         }
       }
