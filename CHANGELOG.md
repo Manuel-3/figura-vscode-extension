@@ -154,6 +154,10 @@
 
 # 0.5.14
 
+- /
+
+# 0.5.15
+
 - Remove old versions
 - Add 0.0.8 target version
 - Clarify description of figura.documentation.sources
