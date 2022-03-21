@@ -151,3 +151,9 @@
 # 0.5.13
 
 - Make settings descriptions a bit more clear
+
+# 0.5.14
+
+- Remove old versions
+- Add 0.0.8 target version
+- Clarify description of figura.documentation.sources

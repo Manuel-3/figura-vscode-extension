@@ -4,7 +4,31 @@ const fs = require('fs');
 const fs_extra = require('fs-extra');
 const path = require('path');
 const parser = require('./src/parser');
-const rootgroups = require('./src/rootgroups/' + targetFiguraVersion);
+let rootgroups;
+if (fs.existsSync(path.join(__dirname, '/src/rootgroups/') + targetFiguraVersion + '.js')) {
+	rootgroups = require('./src/rootgroups/' + targetFiguraVersion);
+}
+else {
+	// This happens if a target version was removed by an update of the extension
+	// Fix settings to use the new/default ones instead
+	const pjson = require('./package.json');
+	const version = pjson.contributes.configuration.properties['figura.targetFiguraVersion'];
+	console.log("Target figura version has been reset to " + version.default);
+	rootgroups = require('./src/rootgroups/' + version.default);
+	// Delete removed versions from sources
+	const sources = vscode.workspace.getConfiguration('figura').get('documentation.sources');
+	const sourcesMap = new Map(Object.entries(sources));
+	sourcesMap.forEach((value, key) => {
+		if (!version.enum.includes(key)) {
+			// Delete removed version entry
+			sources[key] = undefined;
+			// Use the value for the default entry instead, so it isnt lost
+			// (Only bottom most one will be saved, other removed ones are gone)
+			sources[version.default] = value;
+			vscode.workspace.getConfiguration('figura').update('documentation.sources', sources, vscode.ConfigurationTarget.Global);
+		}
+	});
+}
 const downloader = require('./src/downloader');
 const libraries = require('./src/libraries').getLibraries();
 

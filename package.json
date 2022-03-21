@@ -27,15 +27,11 @@
         },
         "figura.targetFiguraVersion": {
           "type": "string",
-          "default": "0.0.7",
+          "default": "0.0.8",
           "enum": [
             "0.0.6",
             "0.0.7",
-            "0.0.8 (animations only)",
-            "0.0.8-rc.6",
-            "0.0.8-rc.7",
-            "0.0.8-rc.9",
-            "0.0.8-rc.10"
+            "0.0.8"
           ],
           "description": "Requires reloading the the window on change.",
           "order": 2
@@ -58,24 +54,12 @@
             "0.0.7": {
               "type": "string"
             },
-            "0.0.8 (animations only)": {
-              "type": "string"
-            },
-            "0.0.8-rc.6": {
-              "type": "string"
-            },
-            "0.0.8-rc.7": {
-              "type": "string"
-            },
-            "0.0.8-rc.9": {
-              "type": "string"
-            },
-            "0.0.8-rc.10": {
+            "0.0.8": {
               "type": "string"
             }
           },
           "additionalProperties": false,
-          "description": "Custom source from where to get the documentation for each version. Can be either a URL or a folder path.",
+          "description": "Custom source from where to get the documentation for each version. Can be either a URL (direct download zip file with a .vscode folder inside) or a folder path (absolute path to a folder, files should be directly in there and NOT in a .vscode subfolder).",
           "order": 5
         }
       }
