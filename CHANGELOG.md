@@ -154,10 +154,19 @@
 
 # 0.5.14
 
-- /
+- skip
 
 # 0.5.15
 
 - Remove old versions
 - Add 0.0.8 target version
 - Clarify description of figura.documentation.sources
+
+# 0.6.0
+
+- skip
+
+# 0.6.1
+
+- Libraries can now use `require` (for 0.1.0 or later)
+- Removed `Player Velocity` snippet

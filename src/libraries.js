@@ -15,7 +15,7 @@ function getLibraries() {
     if (fs.existsSync(destination_dir)) {
         libs = fs.readdirSync(destination_dir)
             .filter(x => x?.endsWith('.lua'))
-            .map(x => { return { name: x.substring(0, x.length - 4), content: fs.readFileSync(path.join(destination_dir, x)).toString() } });
+            .map(x => { return { name: x.substring(0, x.length - 4), content: fs.readFileSync(path.join(destination_dir, x)).toString(), path: path.join(destination_dir, x) } });
     }
     return libs;
 }

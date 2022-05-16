@@ -60,6 +60,12 @@
           },
           "additionalProperties": false,
           "description": "Custom source from where to get the documentation for each version. Can be either a URL (direct download zip file with a .vscode folder inside) or a folder path (absolute path to a folder, files should be directly in there and NOT in a .vscode subfolder).",
+          "order": 4
+        },
+        "figura.requirePath": {
+          "type": "string",
+          "default": "/",
+          "description": "Where to put the library file when imported using `require`. Relative to the workspace root or open folder. Do not move outside that using .. or else Figura will not be able to load the file.",
           "order": 5
         }
       }

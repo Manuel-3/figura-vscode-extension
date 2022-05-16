@@ -75,12 +75,5 @@
       "function player_init()\n    ${0}\nend"
     ],
     "description": "Inserts the player_init function."
-  },
-  "Player Velocity": {
-    "prefix": "Player Velocity",
-    "body": [
-      "pos = nil\n_pos = nil\nvelocity = nil\n\nfunction player_init()\n    pos = player.getPos()\n    _pos = pos\n    velocity = vectors.of({0})\nend\n\nfunction tick()\n    _pos = pos\n    pos = player.getPos()\n    velocity = pos - _pos\nend\n"
-    ],
-    "description": "Player velocity calculation."
   }
 }
