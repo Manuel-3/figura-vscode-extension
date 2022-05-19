@@ -170,3 +170,11 @@
 
 - Libraries can now use `require` (for 0.1.0 or later)
 - Removed `Player Velocity` snippet
+
+# 0.6.2
+
+- Add 0.1.0 target version
+- Also has internal documentation that uses an export of the official Figura mod documentation
+- Will look for any blockbench files that are within the folder that has an avatar.json file
+- Note that when using lua language server and having more than one avatar open at the same time the language server will assume you have access to all models from every avatar
+- Methods that have self as first parameter will automatically change '.' to ':', but doesn't work with inheritance yet

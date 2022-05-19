@@ -31,7 +31,8 @@
           "enum": [
             "0.0.6",
             "0.0.7",
-            "0.0.8"
+            "0.0.8",
+            "0.1.0"
           ],
           "description": "Requires reloading the the window on change.",
           "order": 2
@@ -55,6 +56,9 @@
               "type": "string"
             },
             "0.0.8": {
+              "type": "string"
+            },
+            "0.1.0": {
               "type": "string"
             }
           },
