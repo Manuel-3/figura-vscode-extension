@@ -22,7 +22,7 @@
         "figura.librariesFolderPath": {
           "type": "string",
           "default": "",
-          "description": "Path to the libraries folder.",
+          "description": "Path to the libraries folder. Put any useful lua files in there. They can be used by typing \"import\" (for text, 0.0.8 or lower) or \"require\" (for file, 0.1.0 or later).",
           "order": 1
         },
         "figura.targetFiguraVersion": {
@@ -34,13 +34,13 @@
             "0.0.8",
             "0.1.0"
           ],
-          "description": "Requires reloading the the window on change.",
+          "description": "Changes the internal autocomplete and model and animation tables to match a specific Figura version. This also affects which external documentation is imported (if any). Requires reloading the the window on change.",
           "order": 2
         },
         "figura.documentation.enableDocumentation": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically add Figura documentation to the workspace and enable compatibility mode.",
+          "description": "Automatically add/download a Figura lua documentation to the workspace and also disable the internal autocomplete to avoid duplicates or incompatibilities. Specifying a source below is optional, if no source is specified it will use latest from https://github.com/GrandpaScout/Figura-VSCode-Documentation.",
           "order": 3
         },
         "figura.documentation.sources": {
@@ -63,13 +63,13 @@
             }
           },
           "additionalProperties": false,
-          "description": "Custom source from where to get the documentation for each version. Can be either a URL (direct download zip file with a .vscode folder inside) or a folder path (absolute path to a folder, files should be directly in there and NOT in a .vscode subfolder).",
+          "description": "Custom source for where to get the documentation for each version from. Can be either a URL (direct download zip file with a .vscode folder inside) or a folder path (absolute path to a folder, files should be directly in there and NOT in a .vscode subfolder).",
           "order": 4
         },
         "figura.requirePath": {
           "type": "string",
           "default": "/",
-          "description": "Where to put the library file when imported using `require`. Relative to the workspace root or open folder. Do not move outside that using .. or else Figura will not be able to load the file.",
+          "description": "Where to put the library file when imported using \"require\". Relative to the workspace root or open folder. Do not move outside that using .. or else Figura will not be able to load the file.",
           "order": 5
         }
       }

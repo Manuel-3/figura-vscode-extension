@@ -178,3 +178,7 @@
 - Will look for any blockbench files that are within the folder that has an avatar.json file
 - Note that when using lua language server and having more than one avatar open at the same time the language server will assume you have access to all models from every avatar
 - Methods that have self as first parameter will automatically change '.' to ':', but doesn't work with inheritance yet
+
+# 0.6.3
+
+- Improve description of settings
