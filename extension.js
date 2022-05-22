@@ -111,7 +111,7 @@ async function activate(context) {
 				if (linePrefix.match(/[\.:]\w+$/)) return [];
 
 				for (let i = 0; i < rootgroups.length; i++) {
-					let item = new vscode.CompletionItem(rootgroups[i].group.words[0], rootgroups[i].group.type);
+					let item = new vscode.CompletionItem(rootgroups[i].group.words[0], rootgroups[i].group.completionItemKind);
 					if (rootgroups[i].group.documentations != undefined) {
 						item.detail = 'Documentation available ->';
 						item.documentation = rootgroups[i].group.documentations[0];
@@ -158,9 +158,9 @@ async function activate(context) {
 				let hasSpaces = group.words[n].includes(' ');
 				let isSelfCall = group.selfcalls != undefined ? group.selfcalls[n] : false;
 				if (linePrefix.match(new RegExp(pattern + '$')) && group.showSuggestion) {
-					if (compatmode && group.type == vscode.CompletionItemKind.Method) continue; // in compat mode dont show methods, even when ignoreCompat is true
+					if (compatmode && group.completionItemKind == vscode.CompletionItemKind.Method) continue; // in compat mode dont show methods, even when ignoreCompat is true
 
-					let item = new vscode.CompletionItem(group.words[n], group.type);
+					let item = new vscode.CompletionItem(group.words[n], group.completionItemKind);
 					if (group.documentations != undefined && group.documentations[n] != undefined) {
 						item.detail = 'Documentation available ->';
 						item.documentation = group.documentations[n];
@@ -175,8 +175,8 @@ async function activate(context) {
 						let range = new vscode.Range(new vscode.Position(position.line, position.character - 1), position);
 						item.additionalTextEdits = [new vscode.TextEdit(range, '')]; // remove the '.' or ':'
 					}
-					if (group.type == vscode.CompletionItemKind.Method) item.commitCharacters = ['('];
-					else if (group.type == vscode.CompletionItemKind.Property) item.commitCharacters = ['.', ':'];
+					if (group.completionItemKind == vscode.CompletionItemKind.Method) item.commitCharacters = ['('];
+					else if (group.completionItemKind == vscode.CompletionItemKind.Property) item.commitCharacters = ['.', ':'];
 
 					items.push(item);
 				}

@@ -182,3 +182,9 @@
 # 0.6.3
 
 - Improve description of settings
+
+# 0.6.4
+
+- Add missing inheritance feature from v0.6.2
+- Add autocomplete one layer deeper (example vanilla_model or events or nameplate)
+- Update readme

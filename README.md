@@ -1,18 +1,30 @@
-# Figura Lua Scripts Helper
+# Figura VSCode Extension
 
-Autocomplete (and documentation) for Figura API and code snippets for commonly used things when making Figura avatars.
+This extension aims to help making lua scripts for the Figura Minecraft mod.
 
-## Standalone Mode and Full Documentation Mode
+## Main Features
+
+- Autocomplete for Figura globals
+- BlockBench model reader to provide autocomplete for custom model part names as well as animation names.
+- Lua library folder for easily importing lua files
+- Code snippets for a few useful Figura related things
+- Downloading EmmyLua Figura documentation to use with a lua language server extension
+
+## Autocomplete / Documentation
 
 You can use this extension by itself for basic autocomplete, or it can download a complete documentation if you are using it in combination with a lua language server. This can be enabled in the settings.
 
-## Standalone
+## Libraries
 
-### Autocompletion
+You can change the location of your libraries folder in the settings.
 
-Will provide autocomplete for global figura variables and their API functions.
+Put lua files in the libraries folder, which can then be imported to your avatar by typing "import" or "require" and then the file name of the library.
 
-### Snippets
+Import will copy the text contents into your script (for Figura 0.0.8 or lower, which only allowed one lua file).
+
+Require will copy the file to your avatar folder (for Figura 0.1.0 or later).
+
+## Snippets
 
 Snippets for things that are commonly used when making Figura avatars:
 
@@ -20,7 +32,6 @@ Snippets for things that are commonly used when making Figura avatars:
 <summary>Click to expand</summary>
 
 ```
-Player Velocity
 Hide Model
 Warnings
 Sine Wave
@@ -35,14 +46,6 @@ player_init()
 ```
 
 </details>
-
-### Blockbench Model Reader
-
-The extension will automatically look for a Blockbench model named either `model.bbmodel` or `player_model.bbmodel` to read its structure and provide autocompletion for the names of your custom model parts.
-
-### Libraries
-
-You can put libraries (just normal .lua files) into `.minecraft/figura/model_files/libraries/` (path can be changed in the settings). These can then be used in your script by typing `import`. This is useful if you end up using some things in most of your avatars. Instead of copying the code from another avatar, you can just make a library out of it and import it directly while writing your script in vscode.
 
 ## Lua Language Server + Figura Documentation
 

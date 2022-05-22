@@ -8,8 +8,7 @@ const rootgroups = [];
 
 // ------ parse docs json begin ------
 
-const globalsTypes = new Map(); // string global name to string type
-const typenameToType = new Map(); // string type to WordGroup[]
+const typeToWordGroup = new Map(); // string type to WordGroup[]
 
 // Parsing all classes from the docs file
 for (const [_, group] of Object.entries(docs)) {
@@ -20,40 +19,56 @@ for (const [_, group] of Object.entries(docs)) {
             }
             for (const field of api.fields) {
                 if (field.name == 'models') continue; // ignore "models" global to avoid duplicates
-                rootgroups.push({ group: new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description]), ignoreCompat: false });
-                globalsTypes.set(field.name, field.type);
+                rootgroups.push({ group: new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type), ignoreCompat: false });
             }
         }
         else {
             const methodwords = [];
-            const methodwordsdescriptions = [];
-            const selfcalls = [];
             const fieldwords = [];
-            const fieldwordsdescriptions = [];
+            const superclasses = getSuperClasses(api);
             for (const method of api.methods) {
-                methodwords.push(method.name);
-                methodwordsdescriptions.push(generateMethodDescription(method));
-                selfcalls.push(api.name == (method.parameters[0] && method.parameters[0][0]?.type)); // if first parameter of the method is the same as the class itself
+                let isSelfCall = superclasses.find(clazz => clazz == (method.parameters[0] && method.parameters[0][0]?.type)) != undefined;
+                methodwords.push(new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [generateMethodDescription(method)], [isSelfCall], method.returns[0]));
             }
             for (const field of api.fields) {
-                fieldwords.push(field.name);
-                fieldwordsdescriptions.push(field.description);
+                fieldwords.push(new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type));
             }
-            const methodgroup = new WordGroup(methodwords, vscode.CompletionItemKind.Method, true, methodwordsdescriptions, selfcalls);
-            const fieldgroup = new WordGroup(fieldwords, vscode.CompletionItemKind.Field, true, fieldwordsdescriptions);
-            typenameToType.set(api.name, [methodgroup, fieldgroup]);
+            typeToWordGroup.set(api.name, methodwords.concat(fieldwords));
         }
     }
 }
 
+function getSuperClasses(clazz, current) {
+    if (current == undefined) current = [];
+
+    current.push(clazz.name);
+
+    for (const [_, group] of Object.entries(docs)) {
+        const superclass = group.find(api => api.name == clazz.super);
+        if (superclass != undefined) {
+            current = getSuperClasses(superclass, current);
+            break;
+        }
+    }
+
+    return current;
+}
+
 // Applying all the classes to the globals
 for (const rootgroup of rootgroups) {
-    const global = rootgroup.group.words[0];
-    const type = globalsTypes.get(global);
-    const wordgroups = typenameToType.get(type);
-    if (wordgroups != undefined) {
-        for (const wordgroup of wordgroups) {
-            rootgroup.group.addSubGroup(wordgroup);
+    const g1 = typeToWordGroup.get(rootgroup.group.type);
+    if (g1 != undefined) {
+        for (const g of g1) {
+            rootgroup.group.addSubGroup(g);
+        }
+    }
+    // Applying classes one layer deeper as well (example vanilla_model or events or nameplate)
+    for (const subgroup of rootgroup.group.subgroups) {
+        const g2 = typeToWordGroup.get(subgroup.type);
+        if (g2 != undefined) {
+            for (const g of g2) {
+                subgroup.addSubGroup(g);
+            }
         }
     }
 }
