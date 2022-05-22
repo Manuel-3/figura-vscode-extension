@@ -188,3 +188,7 @@
 - Add missing inheritance feature from v0.6.2
 - Add autocomplete one layer deeper (example vanilla_model or events or nameplate)
 - Update readme
+
+# 0.6.5
+
+- Updated dependencies
