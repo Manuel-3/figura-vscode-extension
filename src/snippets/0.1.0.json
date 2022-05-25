@@ -1,0 +1,44 @@
+{
+  "Hide a specific model": {
+    "prefix": "Hide Model",
+    "body": [
+      "vanilla_model.${1|ALL,PLAYER,ARMOR,ELYTRA,OUTER_LAYER,INNER_LAYER|}.setVisible(false)\n"
+    ],
+    "description": "For hiding a specific model."
+  },
+  "math.sin(world.getTime())": {
+    "prefix": "math.sin(world.getTime())",
+    "body": [
+      "math.sin(world.getTime()*${1:speed})*${2:strength}"
+    ],
+    "description": "Sine wave with speed and strength."
+  },
+  "Execute every X ticks": {
+    "prefix": "Timer",
+    "body": [
+      "if world.getTime() % (20*${1:1}) == 0 then\n    ${0}\nend"
+    ],
+    "description": "Execute every X ticks. Default is 20 ticks (1 second)"
+  },
+  "Event Tick": {
+    "prefix": "events.TICK:register",
+    "body": [
+      "events.TICK:register(function()\n    ${0}\nend)"
+    ],
+    "description": "Registers a TICK event."
+  },
+  "Event Render": {
+    "prefix": "events.RENDER:register",
+    "body": [
+      "events.RENDER:register(function()\n    ${0}\nend)"
+    ],
+    "description": "Registers a RENDER event."
+  },
+  "Event World Render": {
+    "prefix": "events.WORLD_RENDER:register",
+    "body": [
+      "events.WORLD_RENDER:register(function()\n    ${0}\nend)"
+    ],
+    "description": "Registers a WORLD_RENDER event."
+  }
+}

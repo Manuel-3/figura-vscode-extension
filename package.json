@@ -73,13 +73,7 @@
           "order": 5
         }
       }
-    },
-    "snippets": [
-      {
-        "language": "lua",
-        "path": "./snippets.json"
-      }
-    ]
+    }
   },
   "scripts": {
     "lint": "eslint .",

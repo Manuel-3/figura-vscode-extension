@@ -31,6 +31,7 @@ else {
 }
 const downloader = require('./src/downloader');
 const libraries = require('./src/libraries').getLibraries();
+const snippets = require('./src/snippets/' + targetFiguraVersion + '.json');
 
 let compatmode = false;
 
@@ -267,6 +268,30 @@ async function activate(context) {
 					item.command.arguments = [lib.path, lib.name, requirePath];
 					return item;
 				});
+				return items;
+			}
+		}
+	);
+
+	const snippetprovider = vscode.languages.registerCompletionItemProvider(
+		'lua',
+		{
+			provideCompletionItems(document, position, token, context) {
+
+				const linePrefix = document.lineAt(position).text.substr(0, position.character);
+				if (linePrefix.match(/\.\w+$/)) return [];
+
+				const items = [];
+				for (const key in snippets) {
+					if (Object.hasOwnProperty.call(snippets, key)) {
+						const element = snippets[key];
+						const snippet = new vscode.CompletionItem(element.prefix, vscode.CompletionItemKind.Snippet);
+						snippet.insertText = new vscode.SnippetString(element.body[0]);
+						snippet.documentation = new vscode.MarkdownString(element.description);
+						items.push(snippet);
+					}
+				}
+
 				return items;
 			}
 		}
