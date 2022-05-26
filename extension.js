@@ -297,7 +297,7 @@ async function activate(context) {
 		}
 	);
 
-	context.subscriptions.push(rootnodeprovider, subnodeprovider, variableNameProvider, librariesImportProvider, librariesRequireProvider);
+	context.subscriptions.push(rootnodeprovider, subnodeprovider, variableNameProvider, librariesImportProvider, librariesRequireProvider, snippetprovider);
 
 	vscode.window.setStatusBarMessage("Figura extension activated");
 }
