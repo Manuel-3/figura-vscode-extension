@@ -44,7 +44,7 @@ function getSuperClasses(clazz, current) {
     current.push(clazz.name);
 
     for (const [_, group] of Object.entries(docs)) {
-        const superclass = group.find(api => api.name == clazz.super);
+        const superclass = group.find(api => api.name == clazz.parent);
         if (superclass != undefined) {
             current = getSuperClasses(superclass, current);
             break;

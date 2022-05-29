@@ -196,3 +196,7 @@
 # 0.6.6
 
 - Figura 0.1.0 snippets
+
+# 0.6.7
+
+- Update Figura 0.1.0 target to Figura 0.1.0-pre3
