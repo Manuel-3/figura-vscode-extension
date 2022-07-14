@@ -18,7 +18,7 @@ for (const [_, group] of Object.entries(docs)) {
                 rootgroups.push({ group: new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [method.description]), ignoreCompat: false });
             }
             for (const field of api.fields) {
-                if (field.name == 'models') continue; // ignore "models" global to avoid duplicates
+                if (field.name == 'models' || field.name == "animation") continue; // ignore "models" and "animation" globals to avoid duplicates
                 rootgroups.push({ group: new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type), ignoreCompat: false });
             }
         }
@@ -26,11 +26,11 @@ for (const [_, group] of Object.entries(docs)) {
             const methodwords = [];
             const fieldwords = [];
             const superclasses = getSuperClasses(api);
-            for (const method of api.methods) {
+            for (const method of (api.methods ?? [])) {
                 let isSelfCall = superclasses.find(clazz => clazz == (method.parameters[0] && method.parameters[0][0]?.type)) != undefined;
                 methodwords.push(new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [generateMethodDescription(method)], [isSelfCall], method.returns[0]));
             }
-            for (const field of api.fields) {
+            for (const field of (api.fields ?? [])) {
                 fieldwords.push(new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type));
             }
             typeToWordGroup.set(api.name, methodwords.concat(fieldwords));
@@ -54,25 +54,6 @@ function getSuperClasses(clazz, current) {
     return current;
 }
 
-// Applying all the classes to the globals
-for (const rootgroup of rootgroups) {
-    const g1 = typeToWordGroup.get(rootgroup.group.type);
-    if (g1 != undefined) {
-        for (const g of g1) {
-            rootgroup.group.addSubGroup(g);
-        }
-    }
-    // Applying classes one layer deeper as well (example vanilla_model or events or nameplate)
-    for (const subgroup of rootgroup.group.subgroups) {
-        const g2 = typeToWordGroup.get(subgroup.type);
-        if (g2 != undefined) {
-            for (const g of g2) {
-                subgroup.addSubGroup(g);
-            }
-        }
-    }
-}
-
 function generateMethodDescription(method) {
     if (method.parameters.length != method.returns.length) return 'Unexpected error occured, please report this error.';
     let lines = '';
@@ -93,6 +74,7 @@ function generateMethodDescription(method) {
 // ------ watch blockbench files begin ------
 
 let models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
+let animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
 
 let folderwatcher;
 let avatarFolder;
@@ -140,21 +122,29 @@ function refreshModelTree(folder) {
     models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
     rootgroups.push({ group: models, ignoreCompat: true });
 
+    // reset animation
+    index = rootgroups.findIndex(x => x.group == animation);
+    if (index != -1) rootgroups.splice(index, 1);
+    animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
+    rootgroups.push({ group: animation, ignoreCompat: true });
+
     // add new models
     bbmodelpaths.forEach(bbmodelpath => {
         if (bbmodelpath != undefined && bbmodelpath.path != undefined && fs.existsSync(bbmodelpath.path)) {
-            const filegroup = new WordGroup([bbmodelpath.filename], vscode.CompletionItemKind.Field);
+            const filegroup_model = new WordGroup([bbmodelpath.filename], vscode.CompletionItemKind.Field);
+            const filegroup_animation = new WordGroup([bbmodelpath.filename], vscode.CompletionItemKind.Field);
             // parse new model
             try {
                 console.log("parsing " + bbmodelpath.filename);
-                parseBB(bbmodelpath.path, filegroup);
+                parseBB(bbmodelpath.path, filegroup_model, filegroup_animation);
                 // vscode.window.setStatusBarMessage(`Model ${bbmodelpath.filename} reloaded.`);
             }
             catch (err) {
                 console.error(err);
                 vscode.window.showWarningMessage(`Model ${bbmodelpath.filename} could not be parsed.`);
             }
-            models.addSubGroup(filegroup);
+            models.addSubGroup(filegroup_model);
+            animation.addSubGroup(filegroup_animation);
         }
         else {
             vscode.window.showWarningMessage(`Model ${bbmodelpath.filename} not found.`);
@@ -176,15 +166,15 @@ function findAvatarFolder(p) {
     return undefined;
 }
 
-function parseBB(bbmodelpath, modelsubgroup) {
+function parseBB(bbmodelpath, modelsubgroup, animationsubgroup) {
     let bbmodel = JSON.parse(fs.readFileSync(bbmodelpath).toString());
     bbmodelForeach(bbmodel, bbmodel.outliner, modelsubgroup);
-    // bbmodel.animations?.forEach(anim => {
-    //     const animationWordGroup = new WordGroup([anim.name], vscode.CompletionItemKind.Property);
-    //     animationWordGroup.addSubGroup(animationmethods);
-    //     animation.addSubGroup(animationWordGroup);
-    // });
-    // animation.addSubGroup(animationrootmethods);
+    bbmodel.animations?.forEach(anim => {
+        const animationWordGroup = new WordGroup([anim.name], vscode.CompletionItemKind.Property, true, '', false, 'Animation');
+        // animationWordGroup.addSubGroup(animationmethods);
+        animationsubgroup.addSubGroup(animationWordGroup);
+    });
+    // animationsubgroup.addSubGroup(animationrootmethods);
 }
 
 function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
@@ -192,13 +182,13 @@ function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
         if (typeof (element) == 'string') {
             // cube
             let cube = bbmodel.elements.find(x => x.uuid == element);
-            let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Property);
+            let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Property, true, '', false, 'ModelPart');
             // cubeword.addSubGroup(custommodelpart);
             wordgroup.addSubGroup(cubeword);
         }
         else {
             // group
-            let groupword = new WordGroup([element.name], vscode.CompletionItemKind.Property);
+            let groupword = new WordGroup([element.name], vscode.CompletionItemKind.Property, true, '', false, 'ModelPart');
             // groupword.addSubGroup(custommodelpart);
             wordgroup.addSubGroup(groupword);
             bbmodelForeach(bbmodel, element.children, groupword);
@@ -275,6 +265,33 @@ function onDidChangeActiveTextEditor() {
 */
 
 // ------ watch blockbench files end ------
+
+// Applying all the classes to the globals
+for (const rootgroup of rootgroups) {
+    // Apply to first layer
+    const g1 = typeToWordGroup.get(rootgroup.group.type);
+    if (g1 != undefined) {
+        for (const g of g1) {
+            rootgroup.group.addSubGroup(g);
+        }
+    }
+    // Apply to deeper layers
+    for (const subgroup of rootgroup.group.subgroups) {
+        apply(subgroup);
+    }
+}
+
+function apply(current) {
+    for (subgroup of current.subgroups) {
+        apply(subgroup);
+    }
+    const g1 = typeToWordGroup.get(current.type);
+    if (g1 != undefined) {
+        for (const g of g1) {
+            current.addSubGroup(g);
+        }
+    }
+}
 
 // Add all the root groups together for export
 
