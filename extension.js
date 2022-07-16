@@ -286,7 +286,7 @@ async function activate(context) {
 					if (Object.hasOwnProperty.call(snippets, key)) {
 						const element = snippets[key];
 						const snippet = new vscode.CompletionItem(element.prefix, vscode.CompletionItemKind.Snippet);
-						snippet.insertText = new vscode.SnippetString(element.body[0]);
+						snippet.insertText = new vscode.SnippetString(element.body.join('\n'));
 						snippet.documentation = new vscode.MarkdownString(element.description);
 						items.push(snippet);
 					}

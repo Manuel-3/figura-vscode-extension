@@ -40,5 +40,20 @@
       "events.WORLD_RENDER:register(function()\n    ${0}\nend)"
     ],
     "description": "Registers a WORLD_RENDER event."
+  },
+  "Action Wheel Root": {
+    "prefix": "action_wheel_root",
+    "body": [
+      "local root = action_wheel:createPage()$1",
+      "action_wheel:setPage(root)"
+    ]
+  },
+  "Action Wheel New Action": {
+    "prefix": "action_wheel_new_action",
+    "body": [
+      "root:newAction():title(\"$1\"):item(\"$2\").leftClick = function ()",
+      "    $3",
+      "end"
+    ]
   }
 }

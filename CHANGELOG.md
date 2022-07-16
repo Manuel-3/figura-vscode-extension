@@ -209,3 +209,7 @@
 
 - Update Figura 0.1.0 target to Figura 0.1.0-pre5
 - Now supports BlockBench animations
+
+# 0.6.10
+
+- Added two action_wheel snippets for 0.1.0
