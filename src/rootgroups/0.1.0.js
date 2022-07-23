@@ -18,7 +18,7 @@ for (const [_, group] of Object.entries(docs)) {
                 rootgroups.push({ group: new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [method.description]), ignoreCompat: false });
             }
             for (const field of api.fields) {
-                if (field.name == 'models' || field.name == "animation") continue; // ignore "models" and "animation" globals to avoid duplicates
+                if (field.name == 'models' || field.name == "animations") continue; // ignore "models" and "animations" globals to avoid duplicates
                 rootgroups.push({ group: new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type), ignoreCompat: false });
             }
         }
@@ -74,7 +74,7 @@ function generateMethodDescription(method) {
 // ------ watch blockbench files begin ------
 
 let models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
-let animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
+let animations = new WordGroup(['animations'], vscode.CompletionItemKind.Field);
 
 let folderwatcher;
 let avatarFolder;
@@ -122,11 +122,11 @@ function refreshModelTree(folder) {
     models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
     rootgroups.push({ group: models, ignoreCompat: true });
 
-    // reset animation
-    index = rootgroups.findIndex(x => x.group == animation);
+    // reset animations
+    index = rootgroups.findIndex(x => x.group == animations);
     if (index != -1) rootgroups.splice(index, 1);
-    animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
-    rootgroups.push({ group: animation, ignoreCompat: true });
+    animations = new WordGroup(['animations'], vscode.CompletionItemKind.Field);
+    rootgroups.push({ group: animations, ignoreCompat: true });
 
     // add new models
     bbmodelpaths.forEach(bbmodelpath => {
@@ -144,7 +144,7 @@ function refreshModelTree(folder) {
                 vscode.window.showWarningMessage(`Model ${bbmodelpath.filename} could not be parsed.`);
             }
             models.addSubGroup(filegroup_model);
-            animation.addSubGroup(filegroup_animation);
+            animations.addSubGroup(filegroup_animation);
         }
         else {
             vscode.window.showWarningMessage(`Model ${bbmodelpath.filename} not found.`);
@@ -171,10 +171,8 @@ function parseBB(bbmodelpath, modelsubgroup, animationsubgroup) {
     bbmodelForeach(bbmodel, bbmodel.outliner, modelsubgroup);
     bbmodel.animations?.forEach(anim => {
         const animationWordGroup = new WordGroup([anim.name], vscode.CompletionItemKind.Property, true, '', false, 'Animation');
-        // animationWordGroup.addSubGroup(animationmethods);
         animationsubgroup.addSubGroup(animationWordGroup);
     });
-    // animationsubgroup.addSubGroup(animationrootmethods);
 }
 
 function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
@@ -195,74 +193,6 @@ function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
         }
     });
 }
-
-/*
-function onDidChangeActiveTextEditor() {
-
-    // reset models
-    let index = rootgroups.findIndex(x => x.group == models);
-    if (index != -1) rootgroups.splice(index, 1);
-    models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
-    rootgroups.push({ group: models, ignoreCompat: true });
-
-    // reset animation
-    // index = rootgroups.findIndex(x => x.group == animation);
-    // if (index != -1) rootgroups.splice(index, 1);
-    // animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
-    // rootgroups.push({ group: animation, ignoreCompat: true });
-
-    let currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-    if (!currentlyOpenTabfilePath?.endsWith('.lua')) return; // only search for a BB file if a lua script is open
-    let currentlyOpenTabFolderPath;
-    let bbmodelpaths;
-    if (currentlyOpenTabfilePath != undefined) currentlyOpenTabFolderPath = path.dirname(currentlyOpenTabfilePath);
-    if (currentlyOpenTabFolderPath != undefined) bbmodelpaths = (fs.readdirSync(currentlyOpenTabFolderPath).filter(file => file.toLowerCase().endsWith('.bbmodel')).reduce((acc, file) => { acc.push({ path: path.join(currentlyOpenTabFolderPath, file), filename: file.substring(0, file.length - 6) }); return acc; }, []));
-
-    console.log(bbmodelpaths);
-
-    
-    bbmodelpaths.forEach(bbmodelpath => {
-        if (bbmodelpath != undefined && fs.existsSync(bbmodelpath.path)) {
-            const filegroup = new WordGroup([bbmodelpath.filename], vscode.CompletionItemKind.Field);
-            let fsWait = false;
-            filewatchers.push(fs.watch(bbmodelpath.path, (event, filename) => {
-                if (filename) {
-                    if (fsWait) return;
-                    fsWait = setTimeout(() => {
-                        fsWait = false;
-                    }, 100);
-                    console.log(`${filename} file changed`);
-
-                    // reset models
-                    let index = rootgroups.findIndex(x => x.group == models);
-                    if (index != -1) rootgroups.splice(index, 1);
-                    models = new WordGroup(['models'], vscode.CompletionItemKind.Field);
-
-                    // reset animation
-                    // index = rootgroups.findIndex(x => x.group == animation);
-                    // if (index != -1) rootgroups.splice(index, 1);
-                    // animation = new WordGroup(['animation'], vscode.CompletionItemKind.Field);
-
-                    // parse new model
-                    try {
-                        parseBB(bbmodelpath);
-                        vscode.window.setStatusBarMessage("Blockbench model reloaded");
-                    }
-                    catch {
-                        vscode.window.showWarningMessage("Blockbench model not found");
-                    }
-                    rootgroups.push({ group: model, ignoreCompat: true });
-                    // rootgroups.push({ group: animation, ignoreCompat: true });
-                }
-            }));
-            parseBB(bbmodelpath);
-        }
-        else {
-            vscode.window.showWarningMessage("Blockbench model not found");
-        }
-    });   
-}
-*/
 
 // ------ watch blockbench files end ------
 
@@ -292,14 +222,5 @@ function apply(current) {
         }
     }
 }
-
-// Add all the root groups together for export
-
-// only if language server compat mode is not enabled [currently not used]
-// rootgroups.push({ group: ....., ignoreCompat: false });
-
-// always
-// rootgroups.push({ group: models, ignoreCompat: true }); // not needed, will be added by the file watcher
-// rootgroups.push({ group: animation, ignoreCompat: true });
 
 module.exports = rootgroups;

@@ -213,3 +213,8 @@
 # 0.6.10
 
 - Added two action_wheel snippets for 0.1.0
+
+# 0.6.11
+
+- Update Figura 0.1.0 target to Figura 0.1.0-pre6
+- This renamed animation to animations
