@@ -218,3 +218,7 @@
 
 - Update Figura 0.1.0 target to Figura 0.1.0-pre6
 - This renamed animation to animations
+
+# 0.6.12
+
+- Fix snippets

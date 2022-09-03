@@ -2,7 +2,8 @@
   "Hide a specific model": {
     "prefix": "Hide Model",
     "body": [
-      "vanilla_model.${1|ALL,PLAYER,ARMOR,ELYTRA,OUTER_LAYER,INNER_LAYER|}.setVisible(false)\n"
+      "vanilla_model.${1|ALL,PLAYER,ARMOR,ELYTRA,OUTER_LAYER,INNER_LAYER|}:setVisible(false)",
+      ""
     ],
     "description": "For hiding a specific model."
   },
@@ -16,28 +17,36 @@
   "Execute every X ticks": {
     "prefix": "Timer",
     "body": [
-      "if world.getTime() % (20*${1:1}) == 0 then\n    ${0}\nend"
+      "if world.getTime() % (20*${1:1}) == 0 then",
+      "\t${0}",
+      "end"
     ],
     "description": "Execute every X ticks. Default is 20 ticks (1 second)"
   },
   "Event Tick": {
     "prefix": "events.TICK:register",
     "body": [
-      "events.TICK:register(function()\n    ${0}\nend)"
+      "events.TICK:register(function()",
+      "\t${0}",
+      "end)"
     ],
     "description": "Registers a TICK event."
   },
   "Event Render": {
     "prefix": "events.RENDER:register",
     "body": [
-      "events.RENDER:register(function()\n    ${0}\nend)"
+      "events.RENDER:register(function()",
+      "\t${0}",
+      "end)"
     ],
     "description": "Registers a RENDER event."
   },
   "Event World Render": {
     "prefix": "events.WORLD_RENDER:register",
     "body": [
-      "events.WORLD_RENDER:register(function()\n    ${0}\nend)"
+      "events.WORLD_RENDER:register(function()",
+      "\t${0}",
+      "end)"
     ],
     "description": "Registers a WORLD_RENDER event."
   },
@@ -52,7 +61,7 @@
     "prefix": "action_wheel_new_action",
     "body": [
       "root:newAction():title(\"$1\"):item(\"$2\").leftClick = function ()",
-      "    $3",
+      "\t$3",
       "end"
     ]
   }
