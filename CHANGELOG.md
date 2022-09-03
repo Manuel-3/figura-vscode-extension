@@ -222,3 +222,7 @@
 # 0.6.12
 
 - Fix snippets
+
+# 1.6.12
+
+- Change version to "fix" versioning mistake (apparently you can't revert that)
