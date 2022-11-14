@@ -226,3 +226,7 @@
 # 1.6.12
 
 - Change version to "fix" versioning mistake (apparently you can't revert that)
+
+# 1.6.13
+
+- Fix dependency vulnerability
