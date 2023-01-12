@@ -118,14 +118,16 @@
   "Action Wheel Page": {
     "prefix": "action_wheel_page",
     "body": [
-      "local ${1:page} = action_wheel:newPage()$2",
-      "action_wheel:setPage(root)"
+      "local ${1:page} = action_wheel:newPage()",
+      "action_wheel:setPage(root)",
+      "$2"
     ]
   },
   "Action Wheel New Action": {
     "prefix": "action_wheel_new_action",
     "body": [
-      "${1:page}:newAction():title(\"$2\"):item(\"$3\").leftClick = function ()$4",
+      "${1:page}:newAction():title(\"$2\"):item(\"$3\").leftClick = function ()",
+      "\t$4",
       "end"
     ]
   }
