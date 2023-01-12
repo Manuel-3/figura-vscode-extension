@@ -230,3 +230,7 @@
 # 1.6.13
 
 - Fix dependency vulnerability
+
+# 1.6.14
+
+- Add more snippets for additional events
