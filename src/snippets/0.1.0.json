@@ -7,61 +7,127 @@
     ],
     "description": "For hiding a specific model."
   },
-  "math.sin(world.getTime())": {
-    "prefix": "math.sin(world.getTime())",
+  "Event Chat Recive Message": {
+    "prefix": "events.CHAT_RECEIVE_MESSAGE:register",
     "body": [
-      "math.sin(world.getTime()*${1:speed})*${2:strength}"
-    ],
-    "description": "Sine wave with speed and strength."
-  },
-  "Execute every X ticks": {
-    "prefix": "Timer",
-    "body": [
-      "if world.getTime() % (20*${1:1}) == 0 then",
-      "\t${0}",
-      "end"
-    ],
-    "description": "Execute every X ticks. Default is 20 ticks (1 second)"
-  },
-  "Event Tick": {
-    "prefix": "events.TICK:register",
-    "body": [
-      "events.TICK:register(function()",
+      "events.CHAT_RECEIVE_MESSAGE:register(function (message)",
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a TICK event."
+    "description": "Registers a Chat Recive Message event."
+  },
+  "Event Chat Send Message": {
+    "prefix": "events.CHAT_SEND_MESSAGE:register",
+    "body": [
+      "events.CHAT_SEND_MESSAGE:register(function (message)",
+      "\t${0}",
+      "end)"
+    ],
+    "description": "Registers a Chat Send Message event."
+  },
+  "Event Entity Init": {
+    "prefix": "events.ENTITY_INIT:register",
+    "body": [
+        "events.ENTITY_INIT:register(function ()",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Entiy Init event."
+  },
+  "Event Mouse Scroll": {
+    "prefix": "events.MOUSE_SCROLL:register",
+    "body": [
+        "events.MOUSE_SCROLL:register(function (dir)",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Mouse Scroll event."
+  },
+  "Event Post Render": {
+    "prefix": "events.POST_RENDER:register",
+    "body": [
+      "events.POST_RENDER:register(function (delta, context)",
+      "\t${0}",
+      "end)"
+    ],
+    "description": "Registers a Post Render event."
+  },
+  "Event Post World Render": {
+    "prefix": "events.POST_WORLD_RENDER:register",
+    "body": [
+      "events.POST_WORLD_RENDER:register(function (delta, context)",
+      "\t${0}",
+      "end)"
+    ],
+    "description": "Registers a Post World Render event."
   },
   "Event Render": {
     "prefix": "events.RENDER:register",
     "body": [
-      "events.RENDER:register(function()",
+      "events.RENDER:register(function (delta, context)",
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a RENDER event."
+    "description": "Registers a Render event."
+  },
+  "Event Skull Render": {
+    "prefix": "events.SKULL_RENDER:register",
+    "body": [
+      "events.SKULL_RENDER:register(function (delta, block, item)",
+      "\t${0}",
+      "end)"
+    ],
+    "description": "Registers a Skull Render event."
+  },
+  "Event Tick": {
+    "prefix": "events.TICK:register",
+    "body": [
+        "events.TICK:register(function ()",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Tick event."
+  },
+  "Event Use Item": {
+    "prefix": "events.USE_ITEM:register",
+    "body": [
+        "events.USE_ITEM:register(function (item,type)",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Use Item event."
   },
   "Event World Render": {
     "prefix": "events.WORLD_RENDER:register",
     "body": [
-      "events.WORLD_RENDER:register(function()",
+      "events.WORLD_RENDER:register(function (delta, context)",
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a WORLD_RENDER event."
+    "description": "Registers a World Render event."
   },
-  "Action Wheel Root": {
-    "prefix": "action_wheel_root",
+  "Event World Tick": {
+    "prefix": "events.WORLD_TICK:register",
     "body": [
-      "local root = action_wheel:createPage()$1",
-      "action_wheel:setPage(root)"
+        "events.WORLD_TICK:register(function ()",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a World Tick event."
+  },
+  "Action Wheel Page": {
+    "prefix": "action_wheel_page",
+    "body": [
+      "local ${1:page} = action_wheel:newPage()",
+      "action_wheel:setPage(root)",
+      "$2"
     ]
   },
   "Action Wheel New Action": {
     "prefix": "action_wheel_new_action",
     "body": [
-      "root:newAction():title(\"$1\"):item(\"$2\").leftClick = function ()",
-      "\t$3",
+      "${1:page}:newAction():title(\"$2\"):item(\"$3\").leftClick = function ()",
+      "\t$4",
       "end"
     ]
   }
