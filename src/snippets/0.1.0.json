@@ -44,9 +44,9 @@
     "description": "Registers a Mouse Scroll event."
   },
   "Event Mouse Move": {
-    "prefix": "events.MOUSE_SCROLL:register",
+    "prefix": "events.MOUSE_MOVE:register",
     "body": [
-        "events.MOUSE_SCROLL:register(function (x,y)",
+        "events.MOUSE_MOVE:register(function (x,y)",
         "\t${0}",
         "end)"
     ],
@@ -55,16 +55,16 @@
   "Event Mouse Press": {
     "prefix": "events.MOUSE_PRESS:register",
     "body": [
-        "events.MOUSE_SCROLL:register(function (button,status,modifier)",
+        "events.MOUSE_PRESS:register(function (button,status,modifier)",
         "\t${0}",
         "end)"
     ],
     "description": "Registers a Mouse Press event."
   },
   "Event Key Press": {
-    "prefix": "events.MOUSE_SCROLL:register",
+    "prefix": "events.KEY_PRESS:register",
     "body": [
-        "events.MOUSE_SCROLL:register(function (key,status,modifier)",
+        "events.KEY_PRESS:register(function (key,status,modifier)",
         "\t${0}",
         "end)"
     ],
