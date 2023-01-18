@@ -43,10 +43,37 @@
     ],
     "description": "Registers a Mouse Scroll event."
   },
+  "Event Mouse Move": {
+    "prefix": "events.MOUSE_SCROLL:register",
+    "body": [
+        "events.MOUSE_SCROLL:register(function (x,y)",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Mouse Move event."
+  },
+  "Event Mouse Press": {
+    "prefix": "events.MOUSE_PRESS:register",
+    "body": [
+        "events.MOUSE_SCROLL:register(function (button,status,modifier)",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Mouse Press event."
+  },
+  "Event Key Press": {
+    "prefix": "events.MOUSE_SCROLL:register",
+    "body": [
+        "events.MOUSE_SCROLL:register(function (key,status,modifier)",
+        "\t${0}",
+        "end)"
+    ],
+    "description": "Registers a Key Press event."
+  },
   "Event Post Render": {
     "prefix": "events.POST_RENDER:register",
     "body": [
-      "events.POST_RENDER:register(function (delta, context)",
+      "events.POST_RENDER:register(function (delta)",
       "\t${0}",
       "end)"
     ],
@@ -55,7 +82,7 @@
   "Event Post World Render": {
     "prefix": "events.POST_WORLD_RENDER:register",
     "body": [
-      "events.POST_WORLD_RENDER:register(function (delta, context)",
+      "events.POST_WORLD_RENDER:register(function (delta)",
       "\t${0}",
       "end)"
     ],
@@ -100,7 +127,7 @@
   "Event World Render": {
     "prefix": "events.WORLD_RENDER:register",
     "body": [
-      "events.WORLD_RENDER:register(function (delta, context)",
+      "events.WORLD_RENDER:register(function (delta)",
       "\t${0}",
       "end)"
     ],
@@ -119,7 +146,7 @@
     "prefix": "action_wheel_page",
     "body": [
       "local ${1:page} = action_wheel:newPage()",
-      "action_wheel:setPage(root)",
+      "action_wheel:setPage(${1:page})",
       "$2"
     ]
   },
