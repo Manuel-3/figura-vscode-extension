@@ -235,6 +235,6 @@
 
 - Add more snippets for additional events
 
-# 1.6.14
+# 1.6.15
 
 - Adjust / fix snippets
