@@ -234,3 +234,7 @@
 # 1.6.14
 
 - Add more snippets for additional events
+
+# 1.6.14
+
+- Adjust / fix snippets
