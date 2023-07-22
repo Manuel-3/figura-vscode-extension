@@ -250,3 +250,7 @@
 # 1.7.1
 
 - Fix library file copy path when having a parent folder open instead of the avatar folder
+
+# 1.7.2
+
+- Removed no longer needed packages
