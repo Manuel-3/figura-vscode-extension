@@ -2,17 +2,16 @@
 
 This extension aims to help making lua scripts for the Figura Minecraft mod.
 
-## Main Features
+## Important! Read before installing!
 
-- Autocomplete for Figura globals
+This extension no longer provides autocomplete for Figura API!
+For autocomplete, please install the EmmyLua notations from https://github.com/GrandpaScout/FiguraRewriteVSDocs
+
+## Features
+
 - BlockBench model reader to provide autocomplete for custom model part names as well as animation names.
-- Lua library folder for easily importing lua files
-- Code snippets for a few useful Figura related things
-- Downloading EmmyLua Figura documentation to use with a lua language server extension
-
-## Autocomplete / Documentation
-
-You can use this extension by itself for basic autocomplete, or it can download a complete documentation if you are using it in combination with a lua language server. This can be enabled in the settings.
+- Lua library folder for easily importing lua files.
+- Code snippets for a few useful Figura related things. 
 
 ## Libraries
 
@@ -20,33 +19,38 @@ You can change the location of your libraries folder in the settings.
 
 Put lua files in the libraries folder, which can then be imported to your avatar by typing "import" or "require" and then the file name of the library.
 
-Import will copy the text contents into your script (for Figura 0.0.8 or lower, which only allowed one lua file).
+Require will copy the file to your avatar folder or a subfolder you can specify in the settings.
 
-Require will copy the file to your avatar folder (for Figura 0.1.0 or later).
+Import will copy the contents of the library file into the currently open file.
 
 ## Snippets
 
-Snippets for things that are commonly used when making Figura avatars:
+Snippets for things that are commonly used when making Figura avatars.
+
+(For Figura version 0.1.0, hopefully newer versions don't change syntax)
 
 <details>
 <summary>Click to expand</summary>
 
 ```
-Hide Model
-Warnings
-Sine Wave
-Smooth Animation
-Lerp
-Clamp
-Timer
-tick()
-render()
-world_render()
-player_init()
+Hide a specific model
+Event Chat Recive Message
+Event Chat Send Message
+Event Entity Init
+Event Mouse Scroll
+Event Mouse Move
+Event Mouse Press
+Event Key Press
+Event Post Render
+Event Post World Render
+Event Render
+Event Skull Render
+Event Tick
+Event Use Item
+Event World Render
+Event World Tick
+Action Wheel Page
+Action Wheel New Action
 ```
 
 </details>
-
-## Lua Language Server + Figura Documentation
-
-If you have a lua language server, the extension can download lua docs automatically. By default it's going to download https://github.com/GrandpaScout/Figura-VSCode-Documentation and put it into the workspace root folder. You can put a custom download link or even a path to a local folder in the settings instead.

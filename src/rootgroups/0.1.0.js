@@ -2,74 +2,11 @@ const vscode = require('vscode');
 const WordGroup = require('../wordgroup');
 const fs = require('fs');
 const path = require('path');
-const docs = JSON.parse(fs.readFileSync(__filename + 'on').toString()); // read json file with same name
 
 const rootgroups = [];
 
-// ------ parse docs json begin ------
 
 const typeToWordGroup = new Map(); // string type to WordGroup[]
-
-// Parsing all classes from the docs file
-for (const [_, group] of Object.entries(docs)) {
-    for (const api of group) {
-        if (api.name == 'globals') {
-            for (const method of api.methods) {
-                rootgroups.push({ group: new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [method.description]), ignoreCompat: false });
-            }
-            for (const field of api.fields) {
-                if (field.name == 'models' || field.name == "animations") continue; // ignore "models" and "animations" globals to avoid duplicates
-                rootgroups.push({ group: new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type), ignoreCompat: false });
-            }
-        }
-        else {
-            const methodwords = [];
-            const fieldwords = [];
-            const superclasses = getSuperClasses(api);
-            for (const method of (api.methods ?? [])) {
-                let isSelfCall = superclasses.find(clazz => clazz == (method.parameters[0] && method.parameters[0][0]?.type)) != undefined;
-                methodwords.push(new WordGroup([method.name], vscode.CompletionItemKind.Method, true, [generateMethodDescription(method)], [isSelfCall], method.returns[0]));
-            }
-            for (const field of (api.fields ?? [])) {
-                fieldwords.push(new WordGroup([field.name], vscode.CompletionItemKind.Field, true, [field.description], undefined, field.type));
-            }
-            typeToWordGroup.set(api.name, methodwords.concat(fieldwords));
-        }
-    }
-}
-
-function getSuperClasses(clazz, current) {
-    if (current == undefined) current = [];
-
-    current.push(clazz.name);
-
-    for (const [_, group] of Object.entries(docs)) {
-        const superclass = group.find(api => api.name == clazz.parent);
-        if (superclass != undefined) {
-            current = getSuperClasses(superclass, current);
-            break;
-        }
-    }
-
-    return current;
-}
-
-function generateMethodDescription(method) {
-    if (method.parameters.length != method.returns.length) return 'Unexpected error occured, please report this error.';
-    let lines = '';
-    for (let i = 0; i < method.parameters.length; i++) {
-        let params = '';
-        for (let j = 0; j < method.parameters[i].length; j++) {
-            params += `${method.parameters[i][j].type} ${method.parameters[i][j].name}, `;
-        }
-        if (method.parameters[i].length > 0) params = params.substring(0, params.length - 2);
-        lines += `${method.name}(${params}): ${method.returns[i]}\n`;
-    }
-    lines += '\n' + method.description;
-    return lines;
-}
-
-// ------ parse docs json end ------
 
 // ------ watch blockbench files begin ------
 
