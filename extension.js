@@ -134,7 +134,10 @@ async function activate(context) {
 	const copyLibCommand = 'figura.copyLib';
 	const copyLibCommandHandler = (sourcePath, name, requirePath) => {
 		if (vscode.workspace.workspaceFolders != undefined) {
-			const targetPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, requirePath, `${name}.lua`);
+			let currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+			let currentlyOpenTabFolderPath;
+			if (currentlyOpenTabfilePath != undefined) currentlyOpenTabFolderPath = path.dirname(currentlyOpenTabfilePath);
+			const targetPath = path.join(currentlyOpenTabFolderPath, requirePath, `${name}.lua`);
 			if (!fs.existsSync(path.dirname(targetPath))) {
 				fs.mkdirSync(path.dirname(targetPath), { recursive: true });
 			}

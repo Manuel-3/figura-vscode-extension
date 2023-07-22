@@ -246,3 +246,7 @@
 - Removed docs downloader, no longer supported, instead you must now download EmmyLua docs manually and use a Lua language server
 - Removed Figura API autocomplete, use language server instead
 - Removed variable name autocomplete, use langauge server instead
+
+# 1.7.1
+
+- Fix library file copy path when having a parent folder open instead of the avatar folder
