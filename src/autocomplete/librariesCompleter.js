@@ -1,5 +1,8 @@
 const vscode = require('vscode');
+const fs = require('fs');
+const path = require('path');
 const libraries = require('../libraries').getLibraries();
+const { findAvatarFolder } = require('../util');
 
 /**
  * @param {vscode.ExtensionContext} context 
@@ -26,7 +29,7 @@ function activate(context) {
             let currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
             let currentlyOpenTabFolderPath;
             if (currentlyOpenTabfilePath != undefined) currentlyOpenTabFolderPath = path.dirname(currentlyOpenTabfilePath);
-            const targetPath = path.join(currentlyOpenTabFolderPath, requirePath, `${name}.lua`);
+            const targetPath = path.join(findAvatarFolder(currentlyOpenTabFolderPath), requirePath, `${name}.lua`);
             if (!fs.existsSync(path.dirname(targetPath))) {
                 fs.mkdirSync(path.dirname(targetPath), { recursive: true });
             }
@@ -42,7 +45,6 @@ function activate(context) {
         'lua',
         {
             provideCompletionItems(document, position, token, context) {
-    
                 let items = libraries.map(lib => {
                     let item = new vscode.CompletionItem('require: ' + lib.name, vscode.CompletionItemKind.File);
                     const requirePath = vscode.workspace.getConfiguration('figura').get('requirePath');

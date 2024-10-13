@@ -266,6 +266,7 @@
 - Added links to wiki, discord server, figura source code
 - Added Compatibility with PKief.material-icon-theme extension for avatar.json and *.bbmodel icons
 - Fixed autocomplete for subfolders
+- Fixed relative library require
 - Updated snippets to be toggleable
 - Updated extension icon
 - Updated dependencies
