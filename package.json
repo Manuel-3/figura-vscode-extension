@@ -2,7 +2,7 @@
   "name": "figura",
   "displayName": "Figura",
   "description": "Figura Script Helper",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -90,7 +90,7 @@
       }
     },
     "views": {
-      "figuraSettingsSidebar":[
+      "figuraSettingsSidebar": [
         {
           "id": "figuraSettingsView",
           "name": "Settings"
@@ -100,8 +100,8 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id":"figuraSettingsSidebar",
-          "title":"Figura",
+          "id": "figuraSettingsSidebar",
+          "title": "Figura",
           "icon": "images/button.png"
         }
       ]
