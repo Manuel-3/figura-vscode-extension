@@ -254,3 +254,18 @@
 # 1.7.2
 
 - Removed no longer needed packages
+
+# 1.8.0
+
+- Added sidebar menu with useful setup features for Figura development
+- Added Autocomplete for textures
+- Added Autocomplete for ogg sound files
+- Added Button to install lua language server
+- Added Button to go to Blockbench website
+- Added Buttons for libraries folder
+- Added links to wiki, discord server, figura source code
+- Added Compatibility with PKief.material-icon-theme extension for avatar.json and *.bbmodel icons
+- Fixed autocomplete for subfolders
+- Updated snippets to be toggleable
+- Updated extension icon
+- Updated dependencies

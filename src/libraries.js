@@ -5,7 +5,7 @@ const path = require('path');
 const appdata_dir = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share');
 
 if (vscode.workspace.getConfiguration('figura').get('librariesFolderPath') == '') {
-    vscode.workspace.getConfiguration('figura').update('librariesFolderPath', path.join(appdata_dir, '/.minecraft/figura/model_files/libraries/'), vscode.ConfigurationTarget.Global);
+    vscode.workspace.getConfiguration('figura').update('librariesFolderPath', path.join(appdata_dir, '/.minecraft/figura/model_files/libraries/'));
 }
 
 const destination_dir = vscode.workspace.getConfiguration('figura').get('librariesFolderPath');

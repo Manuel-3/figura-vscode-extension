@@ -1,21 +1,30 @@
 # Figura VSCode Extension
 
-This extension aims to help making lua scripts for the Figura Minecraft mod.
+Disclaimer: This is an unofficial extension and is not affiliated with the Figura Minecraft mod or their development team.
 
-## Important! Read before installing!
-
-This extension no longer provides autocomplete for Figura API!
-For autocomplete, please install the EmmyLua notations from https://github.com/GrandpaScout/FiguraRewriteVSDocs
+This extension aims to help in making lua scripts for the Figura Minecraft mod.
 
 ## Features
 
-- BlockBench model reader to provide autocomplete for custom model part names as well as animation names.
-- Lua library folder for easily importing lua files.
-- Code snippets for a few useful Figura related things. 
+- Autocompletion support for Blockbench files, including model part paths, animation names, and texture names.
+- Autocompletion for .ogg sound files.
+- Can set up the lua language server at the press of a button.
+- Library folder for quick access to frequently used Lua scripts.
+- Code snippets for common Figura boilerplate code.
+- Also adds icons for avatar.json and bbmodel files if you have [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) installed.
 
-## Libraries
+## Getting started
 
-You can change the location of your libraries folder in the settings.
+### Settings
+After installing the extension, click the newly added icon on the left sidebar.
+
+### Lua Language Support and Figura Documentation
+
+You can choose to install third party lua language server, and third party Figura documentation. While this is highly recommended to provide the best user experience, they are also not affiliated with this extension, and are made and maintained by third parties, so use them at your own risk! Always make sure to trust the sources before intalling anything!
+
+### Libraries
+
+You can also set up a library folder and put lua scripts in there.
 
 Put lua files in the libraries folder, which can then be imported to your avatar by typing "import" or "require" and then the file name of the library.
 
@@ -23,11 +32,11 @@ Require will copy the file to your avatar folder or a subfolder you can specify 
 
 Import will copy the contents of the library file into the currently open file.
 
-## Snippets
+### Snippets
 
-Snippets for things that are commonly used when making Figura avatars.
+This extension includes snippets for things that are commonly used when making Figura avatars.
 
-(For Figura version 0.1.0, hopefully newer versions don't change syntax)
+You can turn them on or off depending on your needs.
 
 <details>
 <summary>Click to expand</summary>

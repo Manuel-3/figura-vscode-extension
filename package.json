@@ -6,6 +6,9 @@
   "engines": {
     "vscode": "^1.58.0"
   },
+  "files": [
+    "images/avatar-json.png"
+  ],
   "categories": [
     "Programming Languages",
     "Snippets"
@@ -15,7 +18,52 @@
   ],
   "main": "./extension.js",
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "command": "figura.openLibrariesFolder",
+        "title": "Open libraries folder"
+      },
+      {
+        "command": "figura.changeLibrariesFolder",
+        "title": "Change libraries folder"
+      },
+      {
+        "command": "figura.changeTargetRequireFolder",
+        "title": "Change libraries target require folder"
+      },
+      {
+        "command": "figura.askInstallLua",
+        "title": "Ask to install Lua language server"
+      },
+      {
+        "command": "figura.askInstallBlockbench",
+        "title": "Ask to install Blockbench"
+      },
+      {
+        "command": "figura.askInstallDocumentation",
+        "title": "Ask to install Figura documentation"
+      },
+      {
+        "command": "figura.changeAllSnippetsEnabled",
+        "title": "Change enabled state of all snippets"
+      },
+      {
+        "command": "figura.changeSnippetEnabled",
+        "title": "Change enabled state of a snippet"
+      },
+      {
+        "command": "figura.openWiki",
+        "title": "Open the Figura wiki"
+      },
+      {
+        "command": "figura.openDiscord",
+        "title": "Open the Figura Discord server"
+      },
+      {
+        "command": "figura.openFiguraSource",
+        "title": "Open the Figura Github repository"
+      }
+    ],
     "configuration": {
       "title": "Figura",
       "properties": {
@@ -30,8 +78,33 @@
           "default": "/",
           "description": "Where to put the library file when imported using \"require\". Relative to the workspace root or open folder. Do not move outside that using .. or else Figura will not be able to load the file.",
           "order": 5
+        },
+        "figura.snippetEnabledStates": {
+          "type": "object"
+        },
+        "figura.figuraDocumentationRepository": {
+          "type": "string",
+          "default": "https://github.com/GrandpaScout/FiguraRewriteVSDocs/",
+          "description": "Repository for figura vscode documentation. Anything in the `src` folder of that repository is added into the workspace when you trigger the installation."
         }
       }
+    },
+    "views": {
+      "figuraSettingsSidebar":[
+        {
+          "id": "figuraSettingsView",
+          "name": "Settings"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id":"figuraSettingsSidebar",
+          "title":"Figura",
+          "icon": "images/button.png"
+        }
+      ]
     }
   },
   "scripts": {
