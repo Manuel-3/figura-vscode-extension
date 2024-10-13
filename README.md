@@ -8,7 +8,7 @@ This extension aims to help in making lua scripts for the Figura Minecraft mod.
 
 - Autocompletion support for Blockbench files, including model part paths, animation names, and texture names.
 - Autocompletion for .ogg sound files.
-- Can set up the lua language server at the press of a button.
+- Can set up the lua language server and Figura documentation at the press of a button.
 - Library folder for quick access to frequently used Lua scripts.
 - Code snippets for common Figura boilerplate code.
 - Also adds icons for avatar.json and bbmodel files if you have [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) installed.
