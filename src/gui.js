@@ -220,12 +220,12 @@ function activate(context) {
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('figura.changeLibrariesFolder', () => {
-            vscode.commands.executeCommand('workbench.action.openSettings', 'figura.librariesFolderPath');
+            vscode.commands.executeCommand('workbench.action.openSettings', '@id:figura.librariesFolderPath');
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('figura.changeTargetRequireFolder', () => {
-            vscode.commands.executeCommand('workbench.action.openSettings', 'figura.requirePath');
+            vscode.commands.executeCommand('workbench.action.openSettings', '@id:figura.requirePath');
         })
     );
     context.subscriptions.push(

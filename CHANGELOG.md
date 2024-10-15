@@ -270,3 +270,8 @@
 - Updated snippets to be toggleable
 - Updated extension icon
 - Updated dependencies
+
+# 1.8.1
+
+- Added Button to install Figura lua documentation
+- Fixed inaccurate search for libraries folder setting
