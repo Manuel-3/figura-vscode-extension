@@ -37,13 +37,15 @@ function activate(context) {
 			provideCompletionItems(document, position, token, context) {
 
 				let items = [];
-				const linePrefix = document.lineAt(position).text.substr(0, position.character).replace(/\([^)]*\)/g, ''); // remove anything inside ()
+				let linePrefix = document.lineAt(position).text.substr(0, position.character).replace(/\([^)]*\)/g, ''); // remove anything inside ()
+				const i1 = linePrefix.lastIndexOf('.');
+				const i2 = linePrefix.lastIndexOf(':');
+				linePrefix = linePrefix.substring(0, Math.max(i1,i2)+1); // remove anything to the right of the last . or :
 
 				for (let i = 0; i < rootgroups.length; i++) {
 					if (rootgroups[i].ignoreCompat)
 						items = items.concat(browse(document, position, linePrefix, rootgroups[i].group.subgroups, '\\b' + rootgroups[i].group.words[0] + '[\\.:]'));
 				}
-
 				return items;
 			}
 		},
@@ -67,6 +69,7 @@ function activate(context) {
 					if (group.completionItemKind == vscode.CompletionItemKind.Method) continue; // in compat mode dont show methods, even when ignoreCompat is true
 
 					let item = new vscode.CompletionItem(group.words[n], group.completionItemKind);
+					item.sortText = '00001';
 					if (group.documentations != undefined && group.documentations[n] != undefined) {
 						item.detail = 'Documentation available ->';
 						item.documentation = group.documentations[n];

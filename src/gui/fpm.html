@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPM - Figura Package Manager</title>
+    <style>
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        button {
+            color:var(--vscode-button-foreground);
+            border: none;
+            background-color: var(--vscode-button-background);
+            padding: 0.3rem 0.5rem;
+            transition: background-color ease 0.1s;
+            cursor: pointer;
+        }
+        button.primarybtn:hover {
+            background-color: var(--vscode-button-hoverBackground);
+        }
+        button.secondarybtn {
+            color:var(--vscode-button-secondaryForeground);
+            background-color: var(--vscode-button-secondaryBackground);
+        }
+        button.secondarybtn:hover {
+            background-color: var(--vscode-button-secondaryHoverBackground);
+        }
+        button.primarybtn:disabled, button.secondarybtn:disabled {
+            background-color: var(--vscode-disabledForeground);
+            cursor: default;
+        }
+        /* theme styles are added below, do not remove comment */
+        /*${themeStyles}*/
+    </style>
+</head>
+
+<body>
+    <div style="margin: 0; padding: 0; display: flex; align-items: center;">
+        <h1 style="flex-grow: 1;">FPM - Figura Package Manager</h1>
+        <div style="margin: 0; padding: 0;">
+            <button id="listFilesBtn" class="primarybtn">↻</button>
+        </div>
+    </div>
+    <div id="fileList" style="max-width: 100%;"></div>
+    <script type="module" src="/*${scriptUri}*/"></script>
+    <template>
+        <!-- <div style="max-width: 100%; padding: 1rem; margin-bottom: 1rem; background-color: var(--vscode-activityBar-background);"> -->
+        <div style="max-width: 100%; padding: 0; margin-bottom: 1rem; background-color: var(--vscode-sideBar-background);">
+            <div style="display: flex; align-items: center; transition: background-color ease 0.1s; padding-right: 1rem;" onmouseover="this.style.backgroundColor='var(--vscode-list-hoverBackground)';" onmouseout="this.style.backgroundColor='var(--vscode-sideBar-background)';">
+                <div class="expand" style="margin:0; padding:0; flex-grow: 1; cursor: pointer; padding: 0.8rem 1rem;">
+                    <h3 class="title" style="margin:0; padding:0;"></h3>
+                    <p class="shortdescription" style="margin:0; padding:0; color:var(--vscode-disabledForeground)"></p>
+                    <p class="author" style="margin:0; padding:0; color:var(--vscode-disabledForeground); font-weight: 700;"></p>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <button class="download primarybtn">Download</button>
+                    <button class="viewsource secondarybtn">View source</button>
+                </div>
+            </div>
+            <p class="longdescription" style="display:none; padding: 0.8rem 1rem; padding-top: 0; margin:0;"></p>
+        </div>
+    </template>
+    <!--
+    <div style="background-color: var(--vscode-focusBorder)";>--vscode-focusBorder</div>
+    <div style="background-color: var(--vscode-foreground)";>--vscode-foreground</div>
+    <div style="background-color: var(--vscode-disabledForeground)";>--vscode-disabledForeground</div>
+    <div style="background-color: var(--vscode-widget-border)";>--vscode-widget-border</div>
+    <div style="background-color: var(--vscode-widget-shadow)";>--vscode-widget-shadow</div>
+    <div style="background-color: var(--vscode-selection-background)";>--vscode-selection-background</div>
+    <div style="background-color: var(--vscode-descriptionForeground)";>--vscode-descriptionForeground</div>
+    <div style="background-color: var(--vscode-errorForeground)";>--vscode-errorForeground</div>
+    <div style="background-color: var(--vscode-icon-foreground)";>--vscode-icon-foreground</div>
+    <div style="background-color: var(--vscode-sash-hoverBorder)";>--vscode-sash-hoverBorder</div>
+    <div style="background-color: var(--vscode-window-activeBorder)";>--vscode-window-activeBorder</div>
+    <div style="background-color: var(--vscode-window-inactiveBorder)";>--vscode-window-inactiveBorder</div>
+    <div style="background-color: var(--vscode-textBlockQuote-background)";>--vscode-textBlockQuote-background</div>
+    <div style="background-color: var(--vscode-textBlockQuote-border)";>--vscode-textBlockQuote-border</div>
+    <div style="background-color: var(--vscode-textCodeBlock-background)";>--vscode-textCodeBlock-background</div>
+    <div style="background-color: var(--vscode-textLink-activeForeground)";>--vscode-textLink-activeForeground</div>
+    <div style="background-color: var(--vscode-textLink-foreground)";>--vscode-textLink-foreground</div>
+    <div style="background-color: var(--vscode-textPreformat-foreground)";>--vscode-textPreformat-foreground</div>
+    <div style="background-color: var(--vscode-textPreformat-background)";>--vscode-textPreformat-background</div>
+    <div style="background-color: var(--vscode-textSeparator-foreground)";>--vscode-textSeparator-foreground</div>
+    <div style="background-color: var(--vscode-toolbar-hoverBackground)";>--vscode-toolbar-hoverBackground</div>
+    <div style="background-color: var(--vscode-toolbar-hoverOutline)";>--vscode-toolbar-hoverOutline</div>
+    <div style="background-color: var(--vscode-toolbar-activeBackground)";>--vscode-toolbar-activeBackground</div>
+    <div style="background-color: var(--vscode-editorActionList-background)";>--vscode-editorActionList-background</div>
+    <div style="background-color: var(--vscode-editorActionList-foreground)";>--vscode-editorActionList-foreground</div>
+    <div style="background-color: var(--vscode-editorActionList-focusForeground)";>--vscode-editorActionList-focusForeground</div>
+    <div style="background-color: var(--vscode-editorActionList-focusBackground)";>--vscode-editorActionList-focusBackground</div>
+    <div style="background-color: var(--vscode-button-background)";>--vscode-button-background</div>
+    <div style="background-color: var(--vscode-button-foreground)";>--vscode-button-foreground</div>
+    <div style="background-color: var(--vscode-button-border)";>--vscode-button-border</div>
+    <div style="background-color: var(--vscode-button-separator)";>--vscode-button-separator</div>
+    <div style="background-color: var(--vscode-button-hoverBackground)";>--vscode-button-hoverBackground</div>
+    <div style="background-color: var(--vscode-button-secondaryForeground)";>--vscode-button-secondaryForeground</div>
+    <div style="background-color: var(--vscode-button-secondaryBackground)";>--vscode-button-secondaryBackground</div>
+    <div style="background-color: var(--vscode-button-secondaryHoverBackground)";>--vscode-button-secondaryHoverBackground</div>
+    <div style="background-color: var(--vscode-checkbox-background)";>--vscode-checkbox-background</div>
+    <div style="background-color: var(--vscode-checkbox-foreground)";>--vscode-checkbox-foreground</div>
+    <div style="background-color: var(--vscode-checkbox-border)";>--vscode-checkbox-border</div>
+    <div style="background-color: var(--vscode-checkbox-selectBackground)";>--vscode-checkbox-selectBackground</div>
+    <div style="background-color: var(--vscode-checkbox-selectBorder)";>--vscode-checkbox-selectBorder</div>
+    <div style="background-color: var(--vscode-radio-activeForeground)";>--vscode-radio-activeForeground</div>
+    <div style="background-color: var(--vscode-radio-activeBackground)";>--vscode-radio-activeBackground</div>
+    <div style="background-color: var(--vscode-radio-activeBorder)";>--vscode-radio-activeBorder</div>
+    <div style="background-color: var(--vscode-radio-inactiveForeground)";>--vscode-radio-inactiveForeground</div>
+    <div style="background-color: var(--vscode-radio-inactiveBackground)";>--vscode-radio-inactiveBackground</div>
+    <div style="background-color: var(--vscode-radio-inactiveBorder)";>--vscode-radio-inactiveBorder</div>
+    <div style="background-color: var(--vscode-radio-inactiveHoverBackground)";>--vscode-radio-inactiveHoverBackground</div>
+    <div style="background-color: var(--vscode-dropdown-background)";>--vscode-dropdown-background</div>
+    <div style="background-color: var(--vscode-dropdown-listBackground)";>--vscode-dropdown-listBackground</div>
+    <div style="background-color: var(--vscode-dropdown-border)";>--vscode-dropdown-border</div>
+    <div style="background-color: var(--vscode-dropdown-foreground)";>--vscode-dropdown-foreground</div>
+    <div style="background-color: var(--vscode-input-background)";>--vscode-input-background</div>
+    <div style="background-color: var(--vscode-input-border)";>--vscode-input-border</div>
+    <div style="background-color: var(--vscode-input-foreground)";>--vscode-input-foreground</div>
+    <div style="background-color: var(--vscode-input-placeholderForeground)";>--vscode-input-placeholderForeground</div>
+    <div style="background-color: var(--vscode-inputOption-activeBackground)";>--vscode-inputOption-activeBackground</div>
+    <div style="background-color: var(--vscode-inputOption-activeBorder)";>--vscode-inputOption-activeBorder</div>
+    <div style="background-color: var(--vscode-inputOption-activeForeground)";>--vscode-inputOption-activeForeground</div>
+    <div style="background-color: var(--vscode-inputOption-hoverBackground)";>--vscode-inputOption-hoverBackground</div>
+    <div style="background-color: var(--vscode-inputValidation-errorBackground)";>--vscode-inputValidation-errorBackground</div>
+    <div style="background-color: var(--vscode-inputValidation-errorForeground)";>--vscode-inputValidation-errorForeground</div>
+    <div style="background-color: var(--vscode-inputValidation-errorBorder)";>--vscode-inputValidation-errorBorder</div>
+    <div style="background-color: var(--vscode-inputValidation-infoBackground)";>--vscode-inputValidation-infoBackground</div>
+    <div style="background-color: var(--vscode-inputValidation-infoForeground)";>--vscode-inputValidation-infoForeground</div>
+    <div style="background-color: var(--vscode-inputValidation-infoBorder)";>--vscode-inputValidation-infoBorder</div>
+    <div style="background-color: var(--vscode-inputValidation-warningBackground)";>--vscode-inputValidation-warningBackground</div>
+    <div style="background-color: var(--vscode-inputValidation-warningForeground)";>--vscode-inputValidation-warningForeground</div>
+    <div style="background-color: var(--vscode-inputValidation-warningBorder)";>--vscode-inputValidation-warningBorder</div>
+    <div style="background-color: var(--vscode-list-activeSelectionBackground)";>--vscode-list-activeSelectionBackground</div>
+    <div style="background-color: var(--vscode-list-activeSelectionForeground)";>--vscode-list-activeSelectionForeground</div>
+    <div style="background-color: var(--vscode-list-activeSelectionIconForeground)";>--vscode-list-activeSelectionIconForeground</div>
+    <div style="background-color: var(--vscode-list-dropBackground)";>--vscode-list-dropBackground</div>
+    <div style="background-color: var(--vscode-list-focusBackground)";>--vscode-list-focusBackground</div>
+    <div style="background-color: var(--vscode-list-focusForeground)";>--vscode-list-focusForeground</div>
+    <div style="background-color: var(--vscode-list-focusHighlightForeground)";>--vscode-list-focusHighlightForeground</div>
+    <div style="background-color: var(--vscode-list-focusOutline)";>--vscode-list-focusOutline</div>
+    <div style="background-color: var(--vscode-list-focusAndSelectionOutline)";>--vscode-list-focusAndSelectionOutline</div>
+    <div style="background-color: var(--vscode-list-highlightForeground)";>--vscode-list-highlightForeground</div>
+    <div style="background-color: var(--vscode-list-hoverBackground)";>--vscode-list-hoverBackground</div>
+    <div style="background-color: var(--vscode-list-hoverForeground)";>--vscode-list-hoverForeground</div>
+    <div style="background-color: var(--vscode-list-inactiveSelectionBackground)";>--vscode-list-inactiveSelectionBackground</div>
+    <div style="background-color: var(--vscode-list-inactiveSelectionForeground)";>--vscode-list-inactiveSelectionForeground</div>
+    <div style="background-color: var(--vscode-list-inactiveSelectionIconForeground)";>--vscode-list-inactiveSelectionIconForeground</div>
+    <div style="background-color: var(--vscode-list-inactiveFocusBackground)";>--vscode-list-inactiveFocusBackground</div>
+    <div style="background-color: var(--vscode-list-inactiveFocusOutline)";>--vscode-list-inactiveFocusOutline</div>
+    <div style="background-color: var(--vscode-list-invalidItemForeground)";>--vscode-list-invalidItemForeground</div>
+    <div style="background-color: var(--vscode-list-errorForeground)";>--vscode-list-errorForeground</div>
+    <div style="background-color: var(--vscode-list-warningForeground)";>--vscode-list-warningForeground</div>
+    <div style="background-color: var(--vscode-listFilterWidget-background)";>--vscode-listFilterWidget-background</div>
+    <div style="background-color: var(--vscode-listFilterWidget-outline)";>--vscode-listFilterWidget-outline</div>
+    <div style="background-color: var(--vscode-listFilterWidget-noMatchesOutline)";>--vscode-listFilterWidget-noMatchesOutline</div>
+    <div style="background-color: var(--vscode-listFilterWidget-shadow)";>--vscode-listFilterWidget-shadow</div>
+    <div style="background-color: var(--vscode-list-filterMatchBackground)";>--vscode-list-filterMatchBackground</div>
+    <div style="background-color: var(--vscode-list-filterMatchBorder)";>--vscode-list-filterMatchBorder</div>
+    <div style="background-color: var(--vscode-list-deemphasizedForeground)";>--vscode-list-deemphasizedForeground</div>
+    <div style="background-color: var(--vscode-list-dropBetweenBackground)";>--vscode-list-dropBetweenBackground</div>
+    <div style="background-color: var(--vscode-tree-indentGuidesStroke)";>--vscode-tree-indentGuidesStroke</div>
+    <div style="background-color: var(--vscode-tree-inactiveIndentGuidesStroke)";>--vscode-tree-inactiveIndentGuidesStroke</div>
+    <div style="background-color: var(--vscode-tree-tableColumnsBorder)";>--vscode-tree-tableColumnsBorder</div>
+    <div style="background-color: var(--vscode-tree-tableOddRowsBackground)";>--vscode-tree-tableOddRowsBackground</div>
+    <div style="background-color: var(--vscode-activityBar-background)";>--vscode-activityBar-background</div>
+    <div style="background-color: var(--vscode-activityBar-dropBorder)";>--vscode-activityBar-dropBorder</div>
+    <div style="background-color: var(--vscode-activityBar-foreground)";>--vscode-activityBar-foreground</div>
+    <div style="background-color: var(--vscode-activityBar-inactiveForeground)";>--vscode-activityBar-inactiveForeground</div>
+    <div style="background-color: var(--vscode-activityBar-border)";>--vscode-activityBar-border</div>
+    <div style="background-color: var(--vscode-activityBarBadge-background)";>--vscode-activityBarBadge-background</div>
+    <div style="background-color: var(--vscode-activityBarBadge-foreground)";>--vscode-activityBarBadge-foreground</div>
+    <div style="background-color: var(--vscode-activityBar-activeBorder)";>--vscode-activityBar-activeBorder</div>
+    <div style="background-color: var(--vscode-activityBar-activeBackground)";>--vscode-activityBar-activeBackground</div>
+    <div style="background-color: var(--vscode-activityBar-activeFocusBorder)";>--vscode-activityBar-activeFocusBorder</div>
+    <div style="background-color: var(--vscode-activityBarTop-foreground)";>--vscode-activityBarTop-foreground</div>
+    <div style="background-color: var(--vscode-activityBarTop-activeBorder)";>--vscode-activityBarTop-activeBorder</div>
+    <div style="background-color: var(--vscode-activityBarTop-inactiveForeground)";>--vscode-activityBarTop-inactiveForeground</div>
+    <div style="background-color: var(--vscode-activityBarTop-dropBorder)";>--vscode-activityBarTop-dropBorder</div>
+    <div style="background-color: var(--vscode-activityBarTop-background)";>--vscode-activityBarTop-background</div>
+    <div style="background-color: var(--vscode-activityBarTop-activeBackground)";>--vscode-activityBarTop-activeBackground</div>
+    <div style="background-color: var(--vscode-activityWarningBadge-foreground)";>--vscode-activityWarningBadge-foreground</div>
+    <div style="background-color: var(--vscode-activityWarningBadge-background)";>--vscode-activityWarningBadge-background</div>
+    <div style="background-color: var(--vscode-activityErrorBadge-foreground)";>--vscode-activityErrorBadge-foreground</div>
+    <div style="background-color: var(--vscode-activityErrorBadge-background)";>--vscode-activityErrorBadge-background</div>
+    <div style="background-color: var(--vscode-sideBar-background)";>--vscode-sideBar-background</div>
+    <div style="background-color: var(--vscode-sideBar-foreground)";>--vscode-sideBar-foreground</div>
+    <div style="background-color: var(--vscode-sideBar-border)";>--vscode-sideBar-border</div>
+    <div style="background-color: var(--vscode-sideBar-dropBackground)";>--vscode-sideBar-dropBackground</div>
+    <div style="background-color: var(--vscode-sideBarTitle-foreground)";>--vscode-sideBarTitle-foreground</div>
+    <div style="background-color: var(--vscode-sideBarSectionHeader-background)";>--vscode-sideBarSectionHeader-background</div>
+    <div style="background-color: var(--vscode-sideBarSectionHeader-foreground)";>--vscode-sideBarSectionHeader-foreground</div>
+    <div style="background-color: var(--vscode-sideBarSectionHeader-border)";>--vscode-sideBarSectionHeader-border</div>
+    <div style="background-color: var(--vscode-sideBarActivityBarTop-border)";>--vscode-sideBarActivityBarTop-border</div>
+    <div style="background-color: var(--vscode-sideBarTitle-background)";>--vscode-sideBarTitle-background</div>
+    <div style="background-color: var(--vscode-sideBarStickyScroll-background)";>--vscode-sideBarStickyScroll-background</div>
+    <div style="background-color: var(--vscode-sideBarStickyScroll-border)";>--vscode-sideBarStickyScroll-border</div>
+    <div style="background-color: var(--vscode-sideBarStickyScroll-shadow)";>--vscode-sideBarStickyScroll-shadow</div>
+    <div style="background-color: var(--vscode-editor-background)";>--vscode-editor-background</div>
+    <div style="background-color: var(--vscode-editor-foreground)";>--vscode-editor-foreground</div>
+    <div style="background-color: var(--vscode-editorLineNumber-foreground)";>--vscode-editorLineNumber-foreground</div>
+    <div style="background-color: var(--vscode-editorLineNumber-activeForeground)";>--vscode-editorLineNumber-activeForeground</div>
+    <div style="background-color: var(--vscode-editorLineNumber-dimmedForeground)";>--vscode-editorLineNumber-dimmedForeground</div>
+    <div style="background-color: var(--vscode-editorCursor-background)";>--vscode-editorCursor-background</div>
+    <div style="background-color: var(--vscode-editorCursor-foreground)";>--vscode-editorCursor-foreground</div>
+    <div style="background-color: var(--vscode-editorMultiCursor-primary-foreground)";>--vscode-editorMultiCursor-primary-foreground</div>
+    <div style="background-color: var(--vscode-editorMultiCursor-primary-background)";>--vscode-editorMultiCursor-primary-background</div>
+    <div style="background-color: var(--vscode-editorMultiCursor-secondary-foreground)";>--vscode-editorMultiCursor-secondary-foreground</div>
+    <div style="background-color: var(--vscode-editorMultiCursor-secondary-background)";>--vscode-editorMultiCursor-secondary-background</div>
+    <div style="background-color: var(--vscode-editor-placeholder-foreground)";>--vscode-editor-placeholder-foreground</div>
+    -->
+</body>
+
+</html>

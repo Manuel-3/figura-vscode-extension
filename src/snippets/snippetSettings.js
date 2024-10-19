@@ -1,11 +1,11 @@
-const snippets = require('./snippets.json');
+const snippets = require('./snippets');
 const vscode = require('vscode')
 
 let cachedSnippetSettings = {};
 
 function loadSnippetSettings() {
-    let snippetSettings = vscode.workspace.getConfiguration('figura').get('snippetEnabledStates', vscode.ConfigurationTarget.Global);
-    if (snippetSettings == undefined) {
+    let snippetSettings = vscode.workspace.getConfiguration('figura').get('snippetEnabledStates');
+    if (snippetSettings === null) {
         snippetSettings = {};
     }
     for (const key in snippets) {

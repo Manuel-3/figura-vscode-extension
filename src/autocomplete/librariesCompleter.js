@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const libraries = require('../libraries').getLibraries();
+const libraries = require('../libraries');
 const { findAvatarFolder } = require('../util');
 
 /**
@@ -12,8 +12,7 @@ function activate(context) {
         'lua',
         {
             provideCompletionItems(document, position, token, context) {
-    
-                let items = libraries.map(lib => {
+                let items = combined(libraries.getLibraries()).map(lib => {
                     let item = new vscode.CompletionItem('import: ' + lib.name, vscode.CompletionItemKind.File);
                     item.insertText = lib.content;
                     return item;
@@ -45,11 +44,17 @@ function activate(context) {
         'lua',
         {
             provideCompletionItems(document, position, token, context) {
-                let items = libraries.map(lib => {
+                let items = combined(libraries.getLibraries()).map(lib => {
                     let item = new vscode.CompletionItem('require: ' + lib.name, vscode.CompletionItemKind.File);
                     const requirePath = vscode.workspace.getConfiguration('figura').get('requirePath');
                     const requireTarget = path.join(requirePath, lib.name).replaceAll('\\', '/').replace(/^\//, '');
-                    item.insertText = `require("${requireTarget}")`;
+                    const needLocalVar = document.lineAt(position).text.substr(0, position.character-1).trim()=='';
+                    let varName = lib.name;
+                    let match = lib.name.match(/[^\.]+\.?(.+)/); // remove author from file name for the variable
+                    if (lib.name.includes('.') && match && match[1]) {
+                        varName = match[1];
+                    }
+                    item.insertText = needLocalVar ? `local ${varName} = require("${requireTarget}")` : `require("${requireTarget}")`;
                     item.command = {};
                     item.command.title = copyLibCommand;
                     item.command.command = copyLibCommand;
@@ -62,6 +67,10 @@ function activate(context) {
     );
 
     context.subscriptions.push(librariesImportProvider, librariesRequireProvider);
+}
+
+function combined(libs) {
+    return libs.userlibs.concat(libs.defaultlibs.filter(x=>libraries.getDefaultLibraryEnabled(x.name) && !(libs.userlibs.find(y=>y.name == x.name))))
 }
 
 module.exports = { activate }

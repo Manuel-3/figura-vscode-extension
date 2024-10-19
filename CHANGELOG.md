@@ -273,5 +273,14 @@
 
 # 1.8.1
 
+- Added FPM Figura Package Manager system, when downloading lua files they are put into the libraries folder
 - Added Button to install Figura lua documentation
+- Added more snippets and snippet categories
+- Added default libraries that come with the extension, which can be turned off individually. User defined libraries take priority over default ones.
+- Added runLater as a default library
+- Added `local <namehere> = ` when it's not already there when requiring a library
 - Fixed inaccurate search for libraries folder setting
+- Fixed bug with the first time clicking on "check all" or "uncheck all"
+- Changed library folder to auto create the default folder
+- Changed autocompletions to sort to the top of the list
+- Changed description of some settings

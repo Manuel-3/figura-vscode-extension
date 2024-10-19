@@ -2,9 +2,11 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const documentation = require('./documentation');
-const snippetSettings = require('./snippets/snippetSettings');
-const snippets = require('./snippets/snippets.json');
+const documentation = require('../documentation');
+const snippetSettings = require('../snippets/snippetSettings');
+const snippets = require('../snippets/snippets');
+const libraries = require('../libraries');
+const CustomWebviewPanel = require('./webViewPanel');
 
 const luaExtensionId = 'sumneko.lua';
 
@@ -131,7 +133,8 @@ class FiguraTreeDataProvider {
                 return [
                     new TreeItem('📁 Open libraries folder', 'figura.openLibrariesFolder'),
                     new TreeItem('⚙️ Change libraries folder', 'figura.changeLibrariesFolder'),
-                    new TreeItem('⚙️ Change target folder', 'figura.changeTargetRequireFolder')
+                    new TreeItem('⚙️ Change target folder', 'figura.changeTargetRequireFolder'),
+                    new TreeItem('Default Libraries', null, vscode.TreeItemCollapsibleState.Collapsed)
                 ];
             } else if (element.label === 'Snippets') {
 				const items = [];
@@ -146,18 +149,14 @@ class FiguraTreeDataProvider {
                     arguments: [false]
                 }));
 				for (const key in snippets) {
-                        const item = new TreeItem((snippetSettings.getEnabled(key)?'☑️ ':'◽ ')+key, {
-                            command: 'figura.changeSnippetEnabled',
-                            title: 'Change Snippet Enabled',
-                            arguments: [key, !snippetSettings.getEnabled(key)]
-                        });
-                        snippetSettings.subscribe((haveAllChanged, newValue, changedKey) => {
-                            if (haveAllChanged || changedKey == key) {
-                                item.label = (newValue?'☑️ ':'◽ ')+key;
-                                this.update();
-                            }
-                        })
-                        items.push(item);
+                    if (snippets[key].category) {
+                        // Skip snippet for now and create category instead if it wasnt already created
+                        if (!items.find(x=>x.label===snippets[key].category)) {
+                            items.push(new TreeItem(snippets[key].category, null, vscode.TreeItemCollapsibleState.Collapsed));
+                        }
+                        continue;
+                    }
+                    items.push(prepareSnippetButton(key, this));
 				}
                 return items;
             }
@@ -168,16 +167,73 @@ class FiguraTreeDataProvider {
                     new TreeItem('📝 View Figura source code', 'figura.openFiguraSource')
                 ];
             }
+            else if (element.label === 'Default Libraries') {
+                const items = [];
+                items.push(new TreeItem("✔️ Check all", {
+                    command: 'figura.changeAllDefaultLibrariesEnabled',
+                    title: 'Change All Default Libraries Enabled',
+                    arguments: [true]
+                }));
+                items.push(new TreeItem("❌ Uncheck all", {
+                    command: 'figura.changeAllDefaultLibrariesEnabled',
+                    title: 'Change All Default Libraries Enabled',
+                    arguments: [false]
+                }));
+				for (const lib of libraries.getLibraries().defaultlibs) {
+                    items.push(prepareDefaultLibraryButton(lib.name, this));
+				}
+                return items;
+            }
+            else {
+                // Dynamic label for snippet categories
+                const items = [];
+				for (const key in snippets) {
+                    if (snippets[key].category === element.label) {
+                        items.push(prepareSnippetButton(key, this));
+                    }
+				}
+                return items;
+            }
         } else {
             // Return the root elements (sections)
             return [
                 new TreeItem('Setup', null, vscode.TreeItemCollapsibleState.Expanded),
                 new TreeItem('Libraries', null, vscode.TreeItemCollapsibleState.Expanded),
                 new TreeItem('Links', null, vscode.TreeItemCollapsibleState.Expanded),
-                new TreeItem('Snippets', null, vscode.TreeItemCollapsibleState.Collapsed),
+                new TreeItem('Snippets', null, vscode.TreeItemCollapsibleState.Collapsed)
             ];
         }
     }
+}
+
+function prepareSnippetButton(key, figuraTreeDataProvider) {
+    const item = new TreeItem((snippetSettings.getEnabled(key)?'☑️ ':'◽ ')+key, {
+        command: 'figura.changeSnippetEnabled',
+        title: 'Change Snippet Enabled',
+        arguments: [key, !snippetSettings.getEnabled(key)]
+    });
+    snippetSettings.subscribe((haveAllChanged, newValue, changedKey) => {
+        if (haveAllChanged || changedKey == key) {
+            item.label = (newValue?'☑️ ':'◽ ')+key;
+            figuraTreeDataProvider.update();
+        }
+    })
+    return item;
+}
+
+function prepareDefaultLibraryButton(key, figuraTreeDataProvider) {
+    const item = new TreeItem((libraries.getDefaultLibraryEnabled(key)?'☑️ ':'◽ ')+key, {
+        command: 'figura.changeDefaultLibraryEnabled',
+        title: 'Change Default Library Enabled',
+        arguments: [key, !libraries.getDefaultLibraryEnabled(key)]
+    });
+    libraries.subscribe((haveAllChanged, newValue, changedKey) => {
+        if (haveAllChanged || changedKey == key) {
+            item.label = (newValue?'☑️ ':'◽ ')+key;
+            figuraTreeDataProvider.update();
+        }
+    })
+    return item;
 }
 
 class TreeItem extends vscode.TreeItem {
@@ -206,6 +262,12 @@ function activate(context) {
 	const figuraSettingsView = vscode.window.createTreeView('figuraSettingsView', {
         treeDataProvider: figuraTreeDataProvider
     });
+    figuraSettingsView.onDidChangeVisibility(e => {
+        console.log(e)
+        if (e.visible) {
+            CustomWebviewPanel.createOrShow(context);
+        }
+    });
     context.subscriptions.push(figuraSettingsView);
     // Register commands
     context.subscriptions.push(
@@ -214,8 +276,18 @@ function activate(context) {
         })
     );
     context.subscriptions.push(
+        vscode.commands.registerCommand('figura.changeDefaultLibraryEnabled', (key, value) => {
+            libraries.setDefaultLibraryEnabled(key, value);
+        })
+    );
+    context.subscriptions.push(
         vscode.commands.registerCommand('figura.changeAllSnippetsEnabled', (value) => {
             snippetSettings.setAllEnabled(value);
+        })
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand('figura.changeAllDefaultLibrariesEnabled', (value) => {
+            libraries.setAllDefaultLibrariesEnabled(value);
         })
     );
     context.subscriptions.push(
@@ -305,14 +377,15 @@ function activate(context) {
             if (documentation.isInstalled()) {
                 result = await vscode.window.showInformationMessage(
                     `Figura documentation is already installed.`,
-                    'OK'
+                    'Ok',
+                    'Try to update'
                 );
             }
             else {
                 result = await vscode.window.showInformationMessage(
                     'Unofficial Figura documentation is made by a third party! Always make sure to trust things before you install them!',
                     'View source',
-                    /*'Install now anyway',*/ //todo: add this
+                    'Install now anyway',
                     'Cancel'
                 );
             }
@@ -323,6 +396,9 @@ function activate(context) {
             }
             else if (result === 'Install now anyway') {
                 documentation.install();
+            }
+            else if (result === 'Try to update') {
+                documentation.update();
             }
         })
     );

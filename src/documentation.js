@@ -1,12 +1,16 @@
 const vscode = require('vscode');
 
 function isInstalled() {
-    // todo, check workspace root for the files
+    // todo, check workspace for the docs files
     return false
 }
 
 function install() {
-    // todo
+    // todo download and install docs
 }
 
-module.exports = { install, isInstalled }
+function update() {
+    // todo update docs
+}
+
+module.exports = { install, isInstalled, update }
