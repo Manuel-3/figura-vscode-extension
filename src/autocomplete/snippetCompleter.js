@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const snippets = require('../snippets/snippets.json');
+const snippets = require('../snippets/snippets');
 const snippetSettings = require('../snippets/snippetSettings');
 
 /**

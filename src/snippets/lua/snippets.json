@@ -1,11 +1,12 @@
 {
-  "Hide a specific model": {
-    "prefix": "Hide Model",
+  "Hide Vanilla Model": {
+    "prefix": "Hide Vanilla Model",
     "body": [
-      "vanilla_model.${1|ALL,PLAYER,ARMOR,ELYTRA,OUTER_LAYER,INNER_LAYER|}:setVisible(false)",
+      "vanilla_model.${1|ALL,PLAYER,ARMOR,ELYTRA,CAPE,HELD_ITEMS|}:setVisible(false)",
       ""
     ],
-    "description": "For hiding a specific model."
+    "description": "Hide a specified part of the vanilla model.",
+    "category": "General"
   },
   "Event Chat Recive Message": {
     "prefix": "events.CHAT_RECEIVE_MESSAGE:register",
@@ -14,7 +15,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Chat Recive Message event."
+    "description": "Registers a Chat Recive Message event.",
+    "category": "Events"
   },
   "Event Chat Send Message": {
     "prefix": "events.CHAT_SEND_MESSAGE:register",
@@ -23,7 +25,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Chat Send Message event."
+    "description": "Registers a Chat Send Message event.",
+    "category": "Events"
   },
   "Event Entity Init": {
     "prefix": "events.ENTITY_INIT:register",
@@ -32,7 +35,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Entiy Init event."
+    "description": "Registers a Entity Init event.",
+    "category": "Events"
   },
   "Event Mouse Scroll": {
     "prefix": "events.MOUSE_SCROLL:register",
@@ -41,7 +45,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Mouse Scroll event."
+    "description": "Registers a Mouse Scroll event.",
+    "category": "Events"
   },
   "Event Mouse Move": {
     "prefix": "events.MOUSE_MOVE:register",
@@ -50,7 +55,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Mouse Move event."
+    "description": "Registers a Mouse Move event.",
+    "category": "Events"
   },
   "Event Mouse Press": {
     "prefix": "events.MOUSE_PRESS:register",
@@ -59,7 +65,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Mouse Press event."
+    "description": "Registers a Mouse Press event.",
+    "category": "Events"
   },
   "Event Key Press": {
     "prefix": "events.KEY_PRESS:register",
@@ -68,7 +75,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Key Press event."
+    "description": "Registers a Key Press event.",
+    "category": "Events"
   },
   "Event Post Render": {
     "prefix": "events.POST_RENDER:register",
@@ -77,7 +85,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Post Render event."
+    "description": "Registers a Post Render event.",
+    "category": "Events"
   },
   "Event Post World Render": {
     "prefix": "events.POST_WORLD_RENDER:register",
@@ -86,7 +95,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Post World Render event."
+    "description": "Registers a Post World Render event.",
+    "category": "Events"
   },
   "Event Render": {
     "prefix": "events.RENDER:register",
@@ -95,7 +105,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Render event."
+    "description": "Registers a Render event.",
+    "category": "Events"
   },
   "Event Skull Render": {
     "prefix": "events.SKULL_RENDER:register",
@@ -104,7 +115,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a Skull Render event."
+    "description": "Registers a Skull Render event.",
+    "category": "Events"
   },
   "Event Tick": {
     "prefix": "events.TICK:register",
@@ -113,7 +125,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Tick event."
+    "description": "Registers a Tick event.",
+    "category": "Events"
   },
   "Event Use Item": {
     "prefix": "events.USE_ITEM:register",
@@ -122,7 +135,8 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a Use Item event."
+    "description": "Registers a Use Item event.",
+    "category": "Events"
   },
   "Event World Render": {
     "prefix": "events.WORLD_RENDER:register",
@@ -131,7 +145,8 @@
       "\t${0}",
       "end)"
     ],
-    "description": "Registers a World Render event."
+    "description": "Registers a World Render event.",
+    "category": "Events"
   },
   "Event World Tick": {
     "prefix": "events.WORLD_TICK:register",
@@ -140,22 +155,7 @@
         "\t${0}",
         "end)"
     ],
-    "description": "Registers a World Tick event."
-  },
-  "Action Wheel Page": {
-    "prefix": "action_wheel_page",
-    "body": [
-      "local ${1:page} = action_wheel:newPage()",
-      "action_wheel:setPage(${1:page})",
-      "$2"
-    ]
-  },
-  "Action Wheel New Action": {
-    "prefix": "action_wheel_new_action",
-    "body": [
-      "${1:page}:newAction():title(\"$2\"):item(\"$3\").leftClick = function ()",
-      "\t$4",
-      "end"
-    ]
+    "description": "Registers a World Tick event.",
+    "category": "Events"
   }
 }

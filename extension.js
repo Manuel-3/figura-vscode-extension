@@ -3,7 +3,8 @@ const path = require('path');
 const blockbenchCompleter = require('./src/autocomplete/blockbenchCompleter');
 const librariesCompleter = require('./src/autocomplete/librariesCompleter');
 const snippetCompleter = require('./src/autocomplete/snippetCompleter');
-const gui = require('./src/gui');
+const treeView = require('./src/gui/treeView');
+const libraries = require('./src/libraries');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -16,7 +17,7 @@ async function activate(context) {
 	});
 
 	// Setup gui
-	gui.activate(context);
+	treeView.activate(context);
 	
 	// const defaultWorkspaceConfiguration = JSON.stringify({ folders: [{ path: "." }] });
 
@@ -28,6 +29,13 @@ async function activate(context) {
 			}
 		});
 	}
+
+	// Refresh libraries folder when the setting changes
+	vscode.workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration('figura.librariesFolderPath')) {
+            libraries.redoWatchLibraries();
+        }
+    });
 
 	// Autocomplete
 	blockbenchCompleter.activate(context);
@@ -43,7 +51,7 @@ function updateIcons(theme, context) {
 	} else {
 		logo = 'blockbench_logo_white';
 	}
-	let iconTheme = vscode.workspace.getConfiguration('material-icon-theme').get('files.associations', vscode.ConfigurationTarget.Global)
+	let iconTheme = vscode.workspace.getConfiguration('material-icon-theme').get('files.associations')
 	iconTheme['avatar.json'] = `../../${path.basename(context.extensionPath)}/images/avatarjson`;
 	iconTheme['*.bbmodel'] = `../../${path.basename(context.extensionPath)}/images/${logo}`;
 	vscode.workspace.getConfiguration('material-icon-theme').update('files.associations', iconTheme, vscode.ConfigurationTarget.Global);
