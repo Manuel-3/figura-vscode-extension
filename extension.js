@@ -5,7 +5,6 @@ const librariesCompleter = require('./src/autocomplete/librariesCompleter');
 const snippetCompleter = require('./src/autocomplete/snippetCompleter');
 const treeView = require('./src/gui/treeView');
 const libraries = require('./src/libraries');
-const fldcache = require('./src/gui/fldcache');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -19,7 +18,6 @@ async function activate(context) {
 
 	// Setup gui
 	treeView.activate(context);
-	fldcache.activate(context);
 	
 	// const defaultWorkspaceConfiguration = JSON.stringify({ folders: [{ path: "." }] });
 

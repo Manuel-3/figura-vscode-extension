@@ -6,7 +6,6 @@ const documentation = require('../documentation');
 const snippetSettings = require('../snippets/snippetSettings');
 const snippets = require('../snippets/snippets');
 const libraries = require('../libraries');
-const CustomWebviewPanel = require('./webViewPanel');
 
 const luaExtensionId = 'sumneko.lua';
 
@@ -322,7 +321,7 @@ function activate(context) {
             }
             else {
                 result = await vscode.window.showInformationMessage(
-                    'Lua language is a third party extension! Always make sure to trust things before you install them!',
+                    'You\'re about to install Lua language extension by sumneko. Always make sure to trust the author before you install something.',
                     'Show extension',
                     'Install now anyway',
                     'Cancel'
@@ -355,7 +354,7 @@ function activate(context) {
             }
             else {
                 result = await vscode.window.showInformationMessage(
-                    'Blockbench is a third party modeling program! Always make sure to trust things before you install them!',
+                    'Blockbench is an external 3D modeling software. You can download it or use the web version.',
                     'Go to website',
                     'Cancel'
                 );
@@ -377,34 +376,27 @@ function activate(context) {
             if (documentation.isInstalled()) {
                 result = await vscode.window.showInformationMessage(
                     `Figura documentation is already installed.`,
+                    'Go to website',
                     'Ok',
-                    'Try to update'
                 );
             }
             else {
                 result = await vscode.window.showInformationMessage(
-                    'Unofficial Figura documentation is made by a third party! Always make sure to trust things before you install them!',
-                    'View source',
-                    'Install now anyway',
+                    'The VSCode Figura documentation is made by a community member. Always make sure to trust the author before you install something.',
+                    'Go to website',
                     'Cancel'
                 );
             }
-            if (result === 'View source') {
+            if (result === 'Go to website') {
                 // Open the github source
                 const url = vscode.workspace.getConfiguration('figura').get('figuraDocumentationRepository');
                 vscode.env.openExternal(vscode.Uri.parse(url));
-            }
-            else if (result === 'Install now anyway') {
-                documentation.install();
-            }
-            else if (result === 'Try to update') {
-                documentation.update();
             }
         })
     );
     context.subscriptions.push(
         vscode.commands.registerCommand('figura.openWiki', () => {
-            vscode.env.openExternal(vscode.Uri.parse('https://wiki.figuramc.org/'));
+            vscode.env.openExternal(vscode.Uri.parse('https://docs.figuramc.org/'));
         })
     );
     context.subscriptions.push(

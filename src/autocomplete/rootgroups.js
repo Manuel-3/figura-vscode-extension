@@ -198,11 +198,26 @@ function removeLastN(path, n) {
 
 function parseBB(bbmodelpath, modelsubgroup, animationsubgroup, textures, internalpath) {
     let bbmodel = JSON.parse(fs.readFileSync(bbmodelpath).toString());
-    bbmodelForeach(bbmodel, bbmodel.outliner, modelsubgroup);
+    let version;
+    try {
+        version = parseInt(bbmodel.meta.format_version.charAt(0));
+    }
+    catch {
+        version = 5; // default version if format couldnt be found or is weirder new format thats not a number
+    }
+    // outliner
+    if (version <= 4) {
+        bbmodel4Foreach(bbmodel, bbmodel.outliner, modelsubgroup);
+    }
+    else {
+        bbmodel5Foreach(bbmodel, bbmodel.outliner, modelsubgroup);
+    }
+    // animations
     bbmodel.animations?.forEach(anim => {
         const animationWordGroup = new WordGroup([anim.name], vscode.CompletionItemKind.Field, true, '', false, 'Animation');
         animationsubgroup.addSubGroup(animationWordGroup);
     });
+    // textures
     bbmodel.textures?.forEach(texture => {
         const textureName = texture.name.toLowerCase().endsWith(".png")?texture.name.substring(0,texture.name.length-4):texture.name;
         const dirName = path.dirname(bbmodelpath);
@@ -221,21 +236,38 @@ function parseBB(bbmodelpath, modelsubgroup, animationsubgroup, textures, intern
     });
 }
 
-function bbmodelForeach(bbmodel, currentgroup, wordgroup) {
+function bbmodel4Foreach(bbmodel, currentgroup, wordgroup) {
     currentgroup?.forEach(element => {
         if (typeof (element) == 'string') {
             // cube
             let cube = bbmodel.elements.find(x => x.uuid == element);
             let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Field, true, '', false, 'ModelPart');
-            // cubeword.addSubGroup(custommodelpart);
             wordgroup.addSubGroup(cubeword);
         }
         else {
             // group
             let groupword = new WordGroup([element.name], vscode.CompletionItemKind.Field, true, '', false, 'ModelPart');
-            // groupword.addSubGroup(custommodelpart);
             wordgroup.addSubGroup(groupword);
-            bbmodelForeach(bbmodel, element.children, groupword);
+            bbmodel4Foreach(bbmodel, element.children, groupword);
+        }
+    });
+}
+
+// in format 5 groups now also need to be looked up in a separate list
+function bbmodel5Foreach(bbmodel, currentgroup, wordgroup) {
+    currentgroup?.forEach(element => {
+        if (typeof (element) == 'string') {
+            // cube
+            let cube = bbmodel.elements.find(x => x.uuid == element);
+            let cubeword = new WordGroup([cube.name], vscode.CompletionItemKind.Field, true, '', false, 'ModelPart');
+            wordgroup.addSubGroup(cubeword);
+        }
+        else {
+            // group
+            let group = bbmodel.groups.find(x => x.uuid == element.uuid);
+            let groupword = new WordGroup([group.name], vscode.CompletionItemKind.Field, true, '', false, 'ModelPart');
+            wordgroup.addSubGroup(groupword);
+            bbmodel5Foreach(bbmodel, element.children, groupword);
         }
     });
 }

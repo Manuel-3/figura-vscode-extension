@@ -1,3 +1,7 @@
+-- This file was last updated in commit 31dffe3
+-- If there is a newer version available, you can find it here
+-- https://github.com/Manuel-3/figura-scripts/tree/main/src/runLater
+
 ---- Run Later by manuel_2867 ----
 local tmrs={}
 local t=0

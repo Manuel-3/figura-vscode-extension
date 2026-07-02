@@ -1,16 +1,20 @@
 const vscode = require('vscode');
+const fs = require('fs');
+const path = require('path');
 
 function isInstalled() {
-    // todo, check workspace for the docs files
-    return false
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    // If no folders are open, return false
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        return false;
+    }
+
+    // .some() returns true if at least one element in the array passes the test
+    return workspaceFolders.some(folder => {
+        const configPath = path.join(folder.uri.fsPath, '.luarc.json');
+        return fs.existsSync(configPath);
+    });
 }
 
-function install() {
-    // todo download and install docs
-}
-
-function update() {
-    // todo update docs
-}
-
-module.exports = { install, isInstalled, update }
+module.exports = { isInstalled };

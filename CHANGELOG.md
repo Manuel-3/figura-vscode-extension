@@ -271,16 +271,16 @@
 - Updated extension icon
 - Updated dependencies
 
-# 1.8.1
+# 1.9.0
 
-- Added "Figura Library Downloader" system, when downloading lua files they are put into the libraries folder
-- Added Button to install Figura lua documentation
+- Added support for BlockBench version 5
 - Added more snippets and snippet categories
 - Added default libraries that come with the extension, which can be turned off individually. User defined libraries take priority over default ones.
-- Added runLater as a default library
 - Added `local <namehere> = ` when it's not already there when requiring a library
 - Fixed inaccurate search for libraries folder setting
 - Fixed bug with the first time clicking on "check all" or "uncheck all"
+- Fixed figura documentation icon not turning into a checkmark when it is installed
 - Changed library folder to auto create the default folder
 - Changed autocompletions to sort to the top of the list
 - Changed description of some settings
+- Updated figura wiki link
