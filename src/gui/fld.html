@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FPM - Figura Package Manager</title>
+    <title>Figura Library Downloader</title>
     <style>
         code {
             font-family: 'Courier New', monospace;
@@ -39,20 +39,30 @@
 
 <body>
     <div style="margin: 0; padding: 0; display: flex; align-items: center;">
-        <h1 style="flex-grow: 1;">FPM - Figura Package Manager</h1>
-        <div style="margin: 0; padding: 0;">
-            <button id="listFilesBtn" class="primarybtn">↻</button>
+        <h1 style="flex-grow: 1;">Figura Library Downloader</h1>
+        <div id="addTextInputContainer" style="display:none; margin: 0; padding: 0;">
+            Github URL:
+            <input type="text" id="addTextInput" style="margin-left: 1rem; margin-right: 1rem; border: 1px solid white; border-radius: 2px; font-weight: 600; font-family: inherit; height: 1.2em;" />
         </div>
+        <div style="margin: 0; padding: 0;">
+            <button id="addBtn" class="primarybtn">Add</button>
+        </div>
+    </div>
+    <!-- <p style="margin-top: 0;"><strong>Note:</strong> Everything here is made by community members! Always check and trust the source before downloading!</p> -->
+    <div style="display: flex; align-items: center;">
+        <p>Search:</p>
+        <input type="text" id="searchbar" style="flex-grow: 1; margin-left: 1rem; border: 1px solid white; border-radius: 2px; font-weight: 600; font-family: inherit; height: 1.2em;" />
     </div>
     <div id="fileList" style="max-width: 100%;"></div>
     <script type="module" src="/*${scriptUri}*/"></script>
     <template>
         <!-- <div style="max-width: 100%; padding: 1rem; margin-bottom: 1rem; background-color: var(--vscode-activityBar-background);"> -->
         <div style="max-width: 100%; padding: 0; margin-bottom: 1rem; background-color: var(--vscode-sideBar-background);">
+            <p class="searchable" style="display: none;"></p>
             <div style="display: flex; align-items: center; transition: background-color ease 0.1s; padding-right: 1rem;" onmouseover="this.style.backgroundColor='var(--vscode-list-hoverBackground)';" onmouseout="this.style.backgroundColor='var(--vscode-sideBar-background)';">
-                <div class="expand" style="margin:0; padding:0; flex-grow: 1; cursor: pointer; padding: 0.8rem 1rem;">
+                <div class="showinfo" style="margin:0; padding:0; flex-grow: 1; cursor: pointer; padding: 0.8rem 1rem;">
                     <h3 class="title" style="margin:0; padding:0;"></h3>
-                    <p class="shortdescription" style="margin:0; padding:0; color:var(--vscode-disabledForeground)"></p>
+                    <!-- <p class="shortdescription" style="margin:0; padding:0; color:var(--vscode-disabledForeground)"></p> -->
                     <p class="author" style="margin:0; padding:0; color:var(--vscode-disabledForeground); font-weight: 700;"></p>
                 </div>
                 <div style="flex-shrink: 0;">
@@ -60,7 +70,6 @@
                     <button class="viewsource secondarybtn">View source</button>
                 </div>
             </div>
-            <p class="longdescription" style="display:none; padding: 0.8rem 1rem; padding-top: 0; margin:0;"></p>
         </div>
     </template>
     <!--

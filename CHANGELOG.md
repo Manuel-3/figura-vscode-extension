@@ -273,7 +273,7 @@
 
 # 1.8.1
 
-- Added FPM Figura Package Manager system, when downloading lua files they are put into the libraries folder
+- Added "Figura Library Downloader" system, when downloading lua files they are put into the libraries folder
 - Added Button to install Figura lua documentation
 - Added more snippets and snippet categories
 - Added default libraries that come with the extension, which can be turned off individually. User defined libraries take priority over default ones.

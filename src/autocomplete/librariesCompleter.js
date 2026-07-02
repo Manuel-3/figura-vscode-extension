@@ -50,8 +50,8 @@ function activate(context) {
                     const requireTarget = path.join(requirePath, lib.name).replaceAll('\\', '/').replace(/^\//, '');
                     const needLocalVar = document.lineAt(position).text.substr(0, position.character-1).trim()=='';
                     let varName = lib.name;
-                    let match = lib.name.match(/[^\.]+\.?(.+)/); // remove author from file name for the variable
-                    if (lib.name.includes('.') && match && match[1]) {
+                    let match = lib.name.match(/[^#]+#?(.+)/); // remove author from file name for the variable
+                    if (lib.name.includes('#') && match && match[1]) {
                         varName = match[1];
                     }
                     item.insertText = needLocalVar ? `local ${varName} = require("${requireTarget}")` : `require("${requireTarget}")`;
