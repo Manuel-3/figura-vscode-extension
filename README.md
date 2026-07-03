@@ -34,4 +34,4 @@ You can turn them on or off depending on your needs in the menu.
 
 ## Disclaimer
 
-This is an unofficial extension by a community memeber and is not affiliated with the Figura Minecraft mod or their development team.
+This is an unofficial extension by a community member and is not affiliated with the Figura Minecraft mod or their development team.
