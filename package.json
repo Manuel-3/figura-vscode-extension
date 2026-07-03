@@ -2,7 +2,7 @@
   "name": "figura",
   "displayName": "Figura",
   "description": "Figura Script Helper",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -121,10 +121,13 @@
     }
   },
   "scripts": {
+    "login": "vsce login manuel-underscore",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/node": "14.x",
-    "@types/vscode": "^1.58.0"
+    "@types/vscode": "^1.58.0",
+    "@vscode/vsce": "^3.9.2"
   },
   "publisher": "Manuel-Underscore",
   "icon": "images/icon.png",
