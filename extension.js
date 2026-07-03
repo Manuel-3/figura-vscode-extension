@@ -53,6 +53,7 @@ function updateIcons(theme, context) {
 	}
 	let iconTheme = vscode.workspace.getConfiguration('material-icon-theme').get('files.associations')
 	iconTheme['avatar.json'] = `../../${path.basename(context.extensionPath)}/images/avatarjson`;
+	iconTheme['avatar.png'] = `../../${path.basename(context.extensionPath)}/images/avatarpng`;
 	iconTheme['*.bbmodel'] = `../../${path.basename(context.extensionPath)}/images/${logo}`;
 	vscode.workspace.getConfiguration('material-icon-theme').update('files.associations', iconTheme, vscode.ConfigurationTarget.Global);
 }

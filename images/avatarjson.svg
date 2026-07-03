@@ -2,17 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="5.7005887mm"
-   height="5.6689372mm"
-   viewBox="0 0 5.7005887 5.6689372"
    version="1.1"
    id="svg1"
-   sodipodi:docname="avatarjson.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   width="320"
+   height="320"
+   viewBox="0 0 320 320"
+   sodipodi:docname="stars.png"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
@@ -22,24 +24,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="18.972361"
-     inkscape:cx="11.200504"
-     inkscape:cy="10.40988"
-     inkscape:window-width="1920"
-     inkscape:window-height="1009"
-     inkscape:window-x="3432"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
-  <defs
-     id="defs1" />
+     inkscape:export-bgcolor="#00000000" />
   <g
-     id="layer1"
-     transform="matrix(0.78351783,0,0,0.78351783,-65.716279,-85.334972)">
-    <path
-       style="fill:#1f173b;stroke:#5bd8e8;stroke-width:0.7;stroke-linejoin:round;stroke-dasharray:none"
-       d="m 85.01087,115.0147 h 5.000638 l -2.53197,-4.96898 z"
-       id="path1" />
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g1">
+    <image
+       width="320"
+       height="320"
+       preserveAspectRatio="none"
+       xlink:href="data:image/png;base64,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&#10;RU5ErkJggg==&#10;"
+       id="image1" />
   </g>
 </svg>

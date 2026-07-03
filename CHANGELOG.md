@@ -284,3 +284,7 @@
 - Changed autocompletions to sort to the top of the list
 - Changed description of some settings
 - Updated figura wiki link
+
+# 1.9.1
+
+- Updated icons
