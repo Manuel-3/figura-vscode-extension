@@ -274,10 +274,6 @@
 
 - Added missing functions for Player API
 
-## 0.1.1
-
-- Added missing functions for Player API
-
 ## 0.1.0
 
 - Code snippets
