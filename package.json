@@ -2,7 +2,7 @@
   "name": "figura",
   "displayName": "Figura",
   "description": "Figura Script Helper",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -14,7 +14,8 @@
     "Snippets"
   ],
   "activationEvents": [
-    "onLanguage:lua"
+    "onLanguage:lua",
+    "onView:figuraSettingsView"
   ],
   "main": "./extension.js",
   "contributes": {
