@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.9.3
+
+- Fix crash when material icon theme config was not found
+
 ## 1.9.2
 
 - Fix side bar menu not showing up sometimes

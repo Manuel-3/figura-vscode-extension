@@ -51,11 +51,13 @@ function updateIcons(theme, context) {
 	} else {
 		logo = 'blockbench_logo_white';
 	}
-	let iconTheme = vscode.workspace.getConfiguration('material-icon-theme').get('files.associations')
-	iconTheme['avatar.json'] = `../../${path.basename(context.extensionPath)}/images/avatarjson`;
-	iconTheme['avatar.png'] = `../../${path.basename(context.extensionPath)}/images/avatarpng`;
-	iconTheme['*.bbmodel'] = `../../${path.basename(context.extensionPath)}/images/${logo}`;
-	vscode.workspace.getConfiguration('material-icon-theme').update('files.associations', iconTheme, vscode.ConfigurationTarget.Global);
+	let iconTheme = vscode.workspace.getConfiguration('material-icon-theme').get('files.associations');
+	if (iconTheme) {
+		iconTheme['avatar.json'] = `../../${path.basename(context.extensionPath)}/images/avatarjson`;
+		iconTheme['avatar.png'] = `../../${path.basename(context.extensionPath)}/images/avatarpng`;
+		iconTheme['*.bbmodel'] = `../../${path.basename(context.extensionPath)}/images/${logo}`;
+		vscode.workspace.getConfiguration('material-icon-theme').update('files.associations', iconTheme, vscode.ConfigurationTarget.Global);
+	}
 }
 
 function deactivate() { }
